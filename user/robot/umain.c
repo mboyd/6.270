@@ -1,17 +1,18 @@
-// Include headers from OS
 #include <joyos.h>
+#include "navigation.c"
 
-// usetup is called during the calibration period. 
+
 int usetup (void) {
     return 0;
 }
 
-// Entry point to contestant code.
 int umain (void) {
 
     // YOUR CODE GOES HERE
-
-    // Will never return, but the compiler complains without a return
-    // statement.
+    
+    printf("Hello, world!\n");
+    
+    nav_init();
+    
     return 0;
 }
