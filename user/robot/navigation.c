@@ -17,10 +17,18 @@
 
 #define NAV_THREAD_PRIORITY 100
 
+#define NAV_POS_EPS         1.0
+#define NAV_ANG_EPS         5.0
+
 // Navigation target
 float target_x;
 float target_y;
 float target_t;
+
+// Navigation position
+float current_x;
+float current_y;
+float current_t;
 
 // Internal nav state
 static uint8_t nav_thread_id;
@@ -46,10 +54,10 @@ void waitForArrival(void) {
 
 int nav_init(void) {
     // Calibrate gyro
-    printf("\nGo for gyro cal:");
-    go_click();
+    printf("Calibrating gyro...");
     pause(100);
-    gyro_init(GYRO_PORT, LSB_US_PER_DEG, 500L);
+    gyro_init(GYRO_PORT, LSB_US_PER_DEG, 10000L);
+    printf("done.\n");
     
     // Init vars
     target_x = 0; target_y = 0; target_t = 0;
@@ -66,9 +74,20 @@ int nav_start(void) {
 }
 
 int nav_loop(void) {
+    acquire(&nav_done_lock);
     while (1) {
-        // Navigate, dawg
-        printf("Navigating, heading is %.2f...\r", gyro_get_degrees());
+        // Update position estimate
+        current_t = gyro_get_degrees();
+        printf("Heading: %.2f\r", current_t);
+        
+        // Compute target bearing
+        // For now, we want constant-angle drive, and have no way of estimating
+        // position.  So, we keep the target_t unchanged.
+        
+        // Rotate
+        
+        // Drive
+        
         pause(1000);
     }
     return 0;

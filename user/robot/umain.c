@@ -3,6 +3,7 @@
 
 
 int usetup (void) {
+    nav_init();
     return 0;
 }
 
@@ -12,7 +13,7 @@ int umain (void) {
     
     printf("Hello, world!\n");
     
-    nav_init();
+    nav_start();
     
     return 0;
 }
