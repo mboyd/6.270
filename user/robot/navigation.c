@@ -104,6 +104,7 @@ void getPosition(float *x, float *y, float *t) {
     *x = current_x;
     *y = current_y;
     *t = current_t;
+    release(&nav_data_lock);
 }
 
 int isMovementComplete(void) {
