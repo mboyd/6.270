@@ -9,19 +9,19 @@
 #include <math.h>
 
 // Tunable parameters
-#define NAV_ROT_KP              -2
+#define NAV_ROT_KP              -3
 #define NAV_ROT_KI              0
-#define NAV_ROT_KD              0
+#define NAV_ROT_KD              .5
 
-#define NAV_DRV_KP              -4
+#define NAV_DRV_KP              -2
 #define NAV_DRV_KI              0
 #define NAV_DRV_KD              0
 
-#define NAV_FWD_GAIN            50
+#define NAV_FWD_GAIN            100
 
 // "Close-enough" angle and distance
 // POS_EPS is a distance squared
-#define NAV_POS_EPS             4.0
+#define NAV_POS_EPS             1.0
 #define NAV_ANG_EPS             5.0
 
 // Maximum angular error before switching from front drive
@@ -204,12 +204,15 @@ int nav_loop(void) {
         
         current_x += enc_dist * cos(current_t * M_PI / 180); // Use old heading
         current_y += enc_dist * sin(current_t * M_PI / 180);
+
+	target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
         
         printf("Encoders show movement of %.2f cm\n", enc_dist);
         
         current_t = gyro_get_degrees();
         printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\n", current_x, current_y, current_t);
-        
+        printf("angle deviation is: %.2f\n", fmod(fabs(current_t - target_t),360));
+
         if (nav_state == ROTATE) {
             if (fmod(fabs(current_t - target_t), 360) <= NAV_ANG_EPS) {
                 nav_state = DRIVE;
@@ -246,7 +249,7 @@ int nav_loop(void) {
             left_setpoint = forward_vel;
             right_setpoint = forward_vel;
             
-            //update_pid(&rotate_pid);
+            update_pid(&rotate_pid);
             update_pid(&drive_pid);
             
         }
@@ -262,7 +265,7 @@ int nav_loop(void) {
 
         setLRMotors(left_setpoint, right_setpoint);
         
-        pause(50);
+	//        pause(50);
     }
     return 0;
 }
