@@ -7,7 +7,7 @@ void platform_init(void) {
     // Calibrate gyro
     printf("Calibrating gyro...");
     pause(100);
-    gyro_init(GYRO_PORT, LSB_US_PER_DEG, 10000L);
+    gyro_init(GYRO_PORT, LSB_US_PER_DEG, 1000L);
     printf("done.\n");
 }
 

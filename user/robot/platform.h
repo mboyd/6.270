@@ -5,15 +5,15 @@
 #include <lib/motor_group.h>
 
 // Motor / encoder config
-#define L_MOTOR_PORT 0
-#define L_ENCODER_PORT 0
-#define R_MOTOR_PORT 1
-#define R_ENCODER_PORT 1
+#define L_MOTOR_PORT 1
+#define L_ENCODER_PORT 26
+#define R_MOTOR_PORT 0
+#define R_ENCODER_PORT 24
 
 // Drivetrain config
-#define ENCODER_TO_WHEEL_RATIO  3
-#define WHEEL_CIRCUMFERENCE     10.0
-#define WHEEL_TRACK             20.0
+#define ENCODER_TO_WHEEL_RATIO  150
+#define WHEEL_CIRCUMFERENCE     25.0
+#define WHEEL_TRACK             20.8 
 #include <lib/geartrain.h>
 
 // Gyro config

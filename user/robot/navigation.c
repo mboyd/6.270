@@ -9,9 +9,9 @@
 #include <math.h>
 
 // Tunable parameters
-#define NAV_ROT_KP              2.0
+#define NAV_ROT_KP              0
 #define NAV_ROT_KI              0
-#define NAV_ROT_KD              -0.5
+#define NAV_ROT_KD              0
 
 #define NAV_DRV_KP              0.2
 #define NAV_DRV_KI              0
@@ -165,8 +165,13 @@ int nav_init(void) {
     
     init_pid(&rotate_pid, NAV_ROT_KP, NAV_ROT_KI, NAV_ROT_KD,
                 rotate_pid_input, rotate_pid_output);
-    init_pid(&rotate_pid, NAV_DRV_KP, NAV_DRV_KI, NAV_DRV_KD,
+    rotate_pid.goal = 0;
+    rotate_pid.enabled = 1;
+    
+    init_pid(&drive_pid, NAV_DRV_KP, NAV_DRV_KI, NAV_DRV_KD,
                 drive_pid_input, drive_pid_output);
+    drive_pid.goal = 0;
+    drive_pid.enabled = 1;
     
     nav_state = ROTATE;
     
@@ -187,6 +192,8 @@ int nav_loop(void) {
             acquire(&nav_done_lock);
         }
         
+        printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
+        
         left_setpoint = 0;
         right_setpoint = 0;
         
@@ -198,39 +205,37 @@ int nav_loop(void) {
         current_x += enc_dist * cos(current_t); // Use old heading
         current_y += enc_dist * sin(current_t);
         
+        printf("Encoders show movement of %.2f cm\n", enc_dist);
+        
         current_t = gyro_get_degrees();
-        printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\r", current_x, current_y, current_t);
-        
-        if (go_press()) {
-            while (1) {
-                printf("\nHeading: %.2f\r", current_t);
-            }
-        }
-        
-        release(&nav_data_lock);
-        continue;
+        printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\n", current_x, current_y, current_t);
         
         if (nav_state == ROTATE) {
             if (fmod(fabs(current_t - target_t), 360) <= NAV_ANG_EPS) {
                 nav_state = DRIVE;
-                continue;
+                printf("Done rotating\n");
+                goto done;
             }
             
             update_pid(&rotate_pid);
+            printf("Rotating\n");
         
         } else if (nav_state == DRIVE) {
             float dist = square(current_x - target_x) + 
                         square(current_y - target_y);
             
+            printf("Driving, %.2f cm to target\n", dist);
+            
             if (dist <= NAV_POS_EPS) {
                 // Done
                 release(&nav_done_lock);
-                continue;
+                goto done;
             }
             
-            if (fmod(fabs(current_t - target_t), 360) <= NAV_ANG_DRV_LMT) {
+            if (fmod(fabs(current_t - target_t), 360) >= NAV_ANG_DRV_LMT) {
                 nav_state = ROTATE;
-                continue;
+                printf("Nav angle deviation exceeded\n");
+                goto done;
             }
             
             float forward_vel = fmax(target_v, dist * NAV_FWD_GAIN);
@@ -242,6 +247,8 @@ int nav_loop(void) {
             update_pid(&drive_pid);
             
         }
+        
+        done:
         
         release(&nav_data_lock);
         
