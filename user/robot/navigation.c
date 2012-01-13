@@ -9,13 +9,13 @@
 #include <math.h>
 
 // Tunable parameters
-#define NAV_ROT_KP              0
+#define NAV_ROT_KP              2.0
 #define NAV_ROT_KI              0
-#define NAV_ROT_KD              0
+#define NAV_ROT_KD              -0.5
 
-#define NAV_DRV_KP              0
+#define NAV_DRV_KP              0.2
 #define NAV_DRV_KI              0
-#define NAV_DRV_KD              0
+#define NAV_DRV_KD              -0.05
 
 #define NAV_FWD_GAIN            50
 
@@ -139,7 +139,7 @@ float drive_pid_input(void) {
     uint16_t r_enc = encoder_read(R_ENCODER_PORT);
     encoder_reset(R_ENCODER_PORT);
     
-    return (float) (l_enc - r_enc);
+    return (float) (r_enc - l_enc);
 }
 
 void drive_pid_output(float output) {
@@ -199,6 +199,15 @@ int nav_loop(void) {
         
         current_t = gyro_get_degrees();
         printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\r", current_x, current_y, current_t);
+        
+        if (go_press()) {
+            while (1) {
+                printf("\nHeading: %.2f\r", current_t);
+            }
+        }
+        
+        release(&nav_data_lock);
+        continue;
         
         if (nav_state == ROTATE) {
             if (fmod(fabs(current_t - target_t), 360) <= NAV_ANG_EPS) {

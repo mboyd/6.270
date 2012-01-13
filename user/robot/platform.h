@@ -17,8 +17,8 @@
 #include <lib/geartrain.h>
 
 // Gyro config
-#define GYRO_PORT           11
-#define LSB_US_PER_DEG      1400000
+#define GYRO_PORT           23
+#define LSB_US_PER_DEG      1496152
 
 /* Exported globals */
 
