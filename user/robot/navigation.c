@@ -9,13 +9,13 @@
 #include <math.h>
 
 // Tunable parameters
-#define NAV_ROT_KP              0
+#define NAV_ROT_KP              -2
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0
 
-#define NAV_DRV_KP              0.2
+#define NAV_DRV_KP              -4
 #define NAV_DRV_KI              0
-#define NAV_DRV_KD              -0.05
+#define NAV_DRV_KD              0
 
 #define NAV_FWD_GAIN            50
 
@@ -74,7 +74,7 @@ void turnToHeading(float t) {
 void turnToPoint(float x, float y) {
     acquire(&nav_data_lock);
     
-    float t = atan2(x - current_x, y - current_y);
+    float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
     turnToHeading(t);
     release(&nav_data_lock);
 }
@@ -83,7 +83,7 @@ void moveToPoint(float x, float y, float v) {
     acquire(&nav_data_lock);
     target_x = x;
     target_y = y;
-    target_t = atan2(x - current_x, y - current_y);
+    target_t = atan2( y - current_y, x - current_x) * 180 / M_PI;
     target_v = v;
     release(&nav_data_lock);
 }
@@ -135,10 +135,10 @@ void rotate_pid_output(float output) {
 float drive_pid_input(void) {
     // TODO: sign errors
     uint16_t l_enc = encoder_read(L_ENCODER_PORT);
-    encoder_reset(L_ENCODER_PORT);
     
     uint16_t r_enc = encoder_read(R_ENCODER_PORT);
-    encoder_reset(R_ENCODER_PORT);
+    
+    printf("L/R encoders: %u / %u\n", l_enc, r_enc);
     
     return (float) (r_enc - l_enc);
 }
@@ -202,8 +202,8 @@ int nav_loop(void) {
         int16_t r_enc = encoder_read(R_ENCODER_PORT);
         float enc_dist = (l_enc + r_enc) / (2.0 * TICKS_PER_CM);
         
-        current_x += enc_dist * cos(current_t); // Use old heading
-        current_y += enc_dist * sin(current_t);
+        current_x += enc_dist * cos(current_t * M_PI / 180); // Use old heading
+        current_y += enc_dist * sin(current_t * M_PI / 180);
         
         printf("Encoders show movement of %.2f cm\n", enc_dist);
         
@@ -221,16 +221,12 @@ int nav_loop(void) {
             printf("Rotating\n");
         
         } else if (nav_state == DRIVE) {
-            float dist = square(current_x - target_x) + 
-                        square(current_y - target_y);
+            float dist = sqrt(square(current_x - target_x) + 
+                        square(current_y - target_y));
             
             printf("Driving, %.2f cm to target\n", dist);
             
-            if (dist <= NAV_POS_EPS) {
-                // Done
-                release(&nav_done_lock);
-                goto done;
-            }
+            printf("Nav deviation: %.2f\n", fmod(fabs(current_t - target_t), 360));
             
             if (fmod(fabs(current_t - target_t), 360) >= NAV_ANG_DRV_LMT) {
                 nav_state = ROTATE;
@@ -238,12 +234,19 @@ int nav_loop(void) {
                 goto done;
             }
             
-            float forward_vel = fmax(target_v, dist * NAV_FWD_GAIN);
+            if (dist <= NAV_POS_EPS) {
+                // Done
+                release(&nav_done_lock);
+                goto done;
+            }
+            
+
+            float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
             
             left_setpoint = forward_vel;
             right_setpoint = forward_vel;
             
-            update_pid(&rotate_pid);
+            //update_pid(&rotate_pid);
             update_pid(&drive_pid);
             
         }
@@ -252,6 +255,11 @@ int nav_loop(void) {
         
         release(&nav_data_lock);
         
+        printf("L/R Setpoints: %u / %u\n", left_setpoint, right_setpoint);
+        
+        encoder_reset(L_ENCODER_PORT);
+        encoder_reset(R_ENCODER_PORT);
+
         setLRMotors(left_setpoint, right_setpoint);
         
         pause(50);
