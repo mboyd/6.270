@@ -15,7 +15,7 @@ int umain (void) {
     nav_start();
     
     printf("Nav started, setting coords\n");
-    moveToPoint(10, 0, 150);
+    moveToPoint(10, 0, 200);
     //turnToHeading(45);
     printf("Coords set\n");
     

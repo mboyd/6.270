@@ -94,6 +94,8 @@ void setTarget(float x, float y, float t, float v) {
     target_y = y;
     target_t = t;
     target_v = v;
+    left_setpoint = v;
+    right_setpoint = v;
     release(&nav_data_lock);
 }
 
@@ -179,6 +181,7 @@ int nav_init(void) {
 }
 
 int nav_start(void) {
+ 
     nav_thread_id = create_thread(nav_loop, 
                 STACK_DEFAULT, NAV_THREAD_PRIORITY, "nav_loop");
     return 0;
@@ -194,8 +197,8 @@ int nav_loop(void) {
         
         printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
         
-        left_setpoint = 0;
-        right_setpoint = 0;
+        //left_setpoint = 0;
+        //right_setpoint = 0;
         
         // Update position estimate
         int16_t l_enc = encoder_read(L_ENCODER_PORT);
@@ -214,13 +217,19 @@ int nav_loop(void) {
         printf("angle deviation is: %.2f\n", fmod(fabs(current_t - target_t),360));
 
         if (nav_state == ROTATE) {
+	  left_setpoint = 0;
+	  right_setpoint = 0;
             if (fmod(fabs(current_t - target_t), 360) <= NAV_ANG_EPS) {
                 nav_state = DRIVE;
+
+		left_setpoint = target_v;
+		right_setpoint = target_v;
+		printf("left setpoint is: %.2f \t right setpoint is: %.2f target_v is: %.2f\n", left_setpoint, right_setpoint,target_v);
                 printf("Done rotating\n");
                 goto done;
             }
             
-            update_pid(&rotate_pid);
+            //update_pid(&rotate_pid);
             printf("Rotating\n");
         
         } else if (nav_state == DRIVE) {
@@ -244,13 +253,13 @@ int nav_loop(void) {
             }
             
 
-            float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
+	    //            float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
             
-            left_setpoint = forward_vel;
-            right_setpoint = forward_vel;
+	    // left_setpoint = forward_vel;
+            //right_setpoint = forward_vel;
             
-            update_pid(&rotate_pid);
-            update_pid(&drive_pid);
+            //update_pid(&rotate_pid);
+	    update_pid(&drive_pid);
             
         }
         
@@ -264,7 +273,7 @@ int nav_loop(void) {
         encoder_reset(R_ENCODER_PORT);
 
         setLRMotors(left_setpoint, right_setpoint);
-        
+	
 	//        pause(50);
     }
     return 0;
