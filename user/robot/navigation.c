@@ -30,6 +30,8 @@
 
 #define NAV_THREAD_PRIORITY     100
 
+#define VPS_PER_CM              22.3972
+
 // Navigation target
 float target_x;
 float target_y;
@@ -52,6 +54,8 @@ struct lock nav_done_lock;
 
 enum nav_state_t {ROTATE, DRIVE};
 enum nav_state_t nav_state; 
+
+uint32_t vps_last_update;
 
 struct pid_controller rotate_pid;
 struct pid_controller drive_pid;
@@ -151,6 +155,13 @@ void drive_pid_output(float output) {
     right_setpoint -= output;
 }
 
+void vps_update(void) {
+    current_x = objects[0].x * VPS_PER_CM;
+    current_y = objects[0].y * VPS_PER_CM;
+    current_t = objects[0].theta;
+    
+    vps_last_update = position_microtime[0];
+}
 
 
 
@@ -176,6 +187,24 @@ int nav_init(void) {
     drive_pid.enabled = 1;
     
     nav_state = ROTATE;
+    
+    vps_last_update = position_microtime[0];
+    printf("Waiting for VPS fix...");
+    uint32_t start_time = get_time_us();
+    while (vps_last_update == position_microtime[0]) {  // Wait for VPS update
+        copy_objects();  
+        if (get_time_us() - start_time > 1000000) {     // Timeout after 1 sec
+            break;
+        }
+    }
+    
+    if (vps_last_update != position_microtime[0]) {
+        vps_update();
+        printf("done.\n");
+    } else {
+        printf("timeout.\n");
+    }
+
     
     return 0;
 }
@@ -211,6 +240,13 @@ int nav_loop(void) {
 	target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
         
         printf("Encoders show movement of %.2f cm\n", enc_dist);
+        
+        // Check for new VPS fix
+        copy_objects();
+        if (position_microtime[0] != vps_last_update) {
+            printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
+            vps_update();
+        }
         
         current_t = gyro_get_degrees();
         printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\n", current_x, current_y, current_t);

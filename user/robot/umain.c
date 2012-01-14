@@ -2,22 +2,33 @@
 #include "platform.h"
 #include "navigation.h"
 
+extern volatile uint8_t robot_id;
 
-int usetup (void) {
+int usetup(void) {
+    robot_id = 7;
+    
     platform_init();
     nav_init();
     return 0;
 }
 
-int umain (void) {
+int umain(void) {
     printf("Hello, world!\n");
     
     nav_start();
     
     printf("Nav started, setting coords\n");
+
     moveToPoint(10, 0, 200);
     //turnToHeading(45);
+
     printf("Coords set\n");
+    
+    //while (1) {
+    //    copy_objects();
+    //    moveToPoint(objects[2].x, objects[2].y, 200);
+    //    waitForMovementComplete();
+    //}
     
     return 0;
 }
