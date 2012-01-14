@@ -9,9 +9,9 @@
 #include <math.h>
 
 // Tunable parameters
-#define NAV_ROT_KP              -2
+#define NAV_ROT_KP              -4
 #define NAV_ROT_KI              0
-#define NAV_ROT_KD              0
+#define NAV_ROT_KD              1
 
 #define NAV_DRV_KP              -4
 #define NAV_DRV_KI              0
@@ -29,6 +29,8 @@
 #define NAV_ANG_DRV_LMT         20.0
 
 #define NAV_THREAD_PRIORITY     100
+
+#define VPS_PER_CM              22.3972
 
 // Navigation target
 float target_x;
@@ -52,6 +54,8 @@ struct lock nav_done_lock;
 
 enum nav_state_t {ROTATE, DRIVE};
 enum nav_state_t nav_state; 
+
+uint32_t vps_last_update;
 
 struct pid_controller rotate_pid;
 struct pid_controller drive_pid;
@@ -149,6 +153,13 @@ void drive_pid_output(float output) {
     right_setpoint -= output;
 }
 
+void vps_update(void) {
+    current_x = objects[0].x * VPS_PER_CM;
+    current_y = objects[0].y * VPS_PER_CM;
+    current_t = objects[0].theta;
+    
+    vps_last_update = position_microtime[0];
+}
 
 
 
@@ -174,6 +185,24 @@ int nav_init(void) {
     drive_pid.enabled = 1;
     
     nav_state = ROTATE;
+    
+    vps_last_update = position_microtime[0];
+    printf("Waiting for VPS fix...");
+    uint32_t start_time = get_time_us();
+    while (vps_last_update == position_microtime[0]) {  // Wait for VPS update
+        copy_objects();  
+        if (get_time_us() - start_time > 1000000) {     // Timeout after 1 sec
+            break;
+        }
+    }
+    
+    if (vps_last_update != position_microtime[0]) {
+        vps_update();
+        printf("done.\n");
+    } else {
+        printf("timeout.\n");
+    }
+
     
     return 0;
 }
@@ -206,6 +235,13 @@ int nav_loop(void) {
         current_y += enc_dist * sin(current_t * M_PI / 180);
         
         printf("Encoders show movement of %.2f cm\n", enc_dist);
+        
+        // Check for new VPS fix
+        copy_objects();
+        if (position_microtime[0] != vps_last_update) {
+            printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
+            vps_update();
+        }
         
         current_t = gyro_get_degrees();
         printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\n", current_x, current_y, current_t);

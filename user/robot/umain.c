@@ -2,8 +2,11 @@
 #include "platform.h"
 #include "navigation.h"
 
+extern volatile uint8_t robot_id;
 
 int usetup (void) {
+    robot_id = 7;
+    
     platform_init();
     nav_init();
     return 0;
