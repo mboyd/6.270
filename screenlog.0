@@ -7,7 +7,7 @@ Board config OK
 Hardware version 0.61
 Board ID 0000
 Happyboard v0.61
-Motor Battery: 7640mV
+Motor Battery: 7630mV
 Battery OK
 FPGA v0.7
 Board init complete.
@@ -23,659 +23,960 @@ thread table end at 0x715
 (id 6) stack [0x8af,0x783)
 Running usetup()...
 Calibrating gyro...done.
+Waiting for VPS fix...timeout.
 Finished usetup().
 Waiting for RF start, or press Go to start now.
 Running umain()...
 Hello, world!
-Nav started, setting coords
-Target x: 0.00	Target y: 0.00	Target t: 0.00
-Encoders show movement of 0.03 cm
-X: 0.03 	Y: 0.00 	Heading: -0.30 		
-angle deviation is: 180.30
-Rotating
-L/R Setpoints: 0 / 0
-Coords set
-Target x: 10.00	Target y: 0.00	Target t: 0.00
-Encoders show movement of 0.00 cm
-X: 0.03 	Y: 0.00 	Heading: -0.11 		
-angle deviation is: 0.11
-left setpoint is: 0.00 	 right setpoint is: 200.00 target_v is: 0.00
-Done rotating
-L/R Setpoints: 200 / 200
-Target x: 10.00	Target y: 0.00	Target t: 0.00
-Encoders show movement of 0.06 cm
-X: 0.08 	Y: -0.00 	Heading: -0.14 		
-angle deviation is: 0.14
-Driving, 9.92 cm to target
-Nav deviation: 0.14
-L/R encoders: 21 / 21
-L/R Setpoints: 200 / 200
-Target x: 10.00	Target y: 0.00	Target t: 0.00
-Encoders show movement of 0.18 cm
-X: 0.26 	Y: -0.00 	Heading: 0.66 		
-angle deviation is: 0.66
-Driving, 9.74 cm to target
-Nav deviation: 0.66
-L/R encoders: 28 / 31
-L/R Setpoints: 206 / 194
-Target x: 10.00	Target y: 0.00	Target t: 0.00
-Encoders show movement of 0.21 cm
-X: 0.47 	Y: 0.00 	Heading: 2.17 		
-angle deviation is: 2.18
-Driving, 9.53 cm to target
-Nav deviation: 2.18
-L/R encoders: 29 / 31
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -0.01
-Encoders show movement of 0.19 cm
-X: 0.67 	Y: 0.01 	Heading: 2.83 		
-angle deviation is: 2.89
-Driving, 9.33 cm to target
-Nav deviation: 2.89
-L/R encoders: 29 / 31
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -0.06
-Encoders show movement of 0.19 cm
-X: 0.86 	Y: 0.02 	Heading: 4.08 		
-angle deviation is: 4.20
-Driving, 9.14 cm to target
-Nav deviation: 4.20
-L/R encoders: 30 / 29
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -0.12
-Encoders show movement of 0.19 cm
-X: 1.05 	Y: 0.03 	Heading: 3.63 		
-angle deviation is: 3.84
-Driving, 8.95 cm to target
-Nav deviation: 3.84
-L/R encoders: 29 / 30
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -0.21
-Encoders show movement of 0.19 cm
-X: 1.25 	Y: 0.05 	Heading: 4.10 		
-angle deviation is: 4.39
-Driving, 8.75 cm to target
-Nav deviation: 4.39
-L/R encoders: 29 / 29
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -0.29
-Encoders show movement of 0.18 cm
-X: 1.43 	Y: 0.06 	Heading: 3.40 		
-angle deviation is: 3.78
-Driving, 8.57 cm to target
-Nav deviation: 3.78
-L/R encoders: 29 / 29
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -0.39
-Encoders show movement of 0.19 cm
-X: 1.62 	Y: 0.07 	Heading: 3.68 		
-angle deviation is: 4.15
-Driving, 8.38 cm to target
-Nav deviation: 4.15
-L/R encoders: 29 / 29
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -0.47
-Encoders show movement of 0.19 cm
-X: 1.82 	Y: 0.08 	Heading: 2.64 		
-angle deviation is: 3.22
-Driving, 8.18 cm to target
-Nav deviation: 3.22
-L/R encoders: 29 / 28
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -0.57
-Encoders show movement of 0.19 cm
-X: 2.01 	Y: 0.09 	Heading: 2.12 		
-angle deviation is: 2.77
-Driving, 7.99 cm to target
-Nav deviation: 2.77
-L/R encoders: 29 / 29
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -0.65
-Encoders show movement of 0.21 cm
-X: 2.22 	Y: 0.10 	Heading: 2.65 		
-angle deviation is: 3.37
-Driving, 7.78 cm to target
-Nav deviation: 3.37
-L/R encoders: 29 / 29
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -0.73
-Encoders show movement of 0.18 cm
-X: 2.40 	Y: 0.11 	Heading: 2.19 		
-angle deviation is: 2.99
-Driving, 7.60 cm to target
-Nav deviation: 2.99
-L/R encoders: 29 / 28
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -0.81
-Encoders show movement of 0.18 cm
-X: 2.58 	Y: 0.11 	Heading: 2.21 		
-angle deviation is: 3.09
-Driving, 7.42 cm to target
-Nav deviation: 3.09
-L/R encoders: 29 / 29
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -0.88
-Encoders show movement of 0.19 cm
-X: 2.77 	Y: 0.12 	Heading: 2.97 		
-angle deviation is: 3.93
-Driving, 7.23 cm to target
-Nav deviation: 3.93
-L/R encoders: 29 / 29
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -0.96
-Encoders show movement of 0.17 cm
-X: 2.94 	Y: 0.13 	Heading: 2.70 		
-angle deviation is: 3.75
-Driving, 7.06 cm to target
-Nav deviation: 3.75
-L/R encoders: 28 / 28
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -1.05
-Encoders show movement of 0.19 cm
-X: 3.14 	Y: 0.14 	Heading: 2.36 		
-angle deviation is: 3.52
-Driving, 6.87 cm to target
-Nav deviation: 3.52
-L/R encoders: 29 / 28
-L/R Setpoints: 208 / 192
-Target x: 10.00	Target y: 0.00	Target t: -1.16
-Encoders show movement of 0.17 cm
-X: 3.30 	Y: 0.15 	Heading: 1.89 		
-angle deviation is: 3.14
-Driving, 6.70 cm to target
-Nav deviation: 3.14
-L/R encoders: 28 / 29
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -1.25
-Encoders show movement of 0.19 cm
-X: 3.50 	Y: 0.15 	Heading: 2.65 		
-angle deviation is: 3.99
-Driving, 6.51 cm to target
-Nav deviation: 3.99
-L/R encoders: 28 / 30
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -1.34
-Encoders show movement of 0.18 cm
-X: 3.68 	Y: 0.16 	Heading: 3.23 		
-angle deviation is: 4.68
-Driving, 6.33 cm to target
-Nav deviation: 4.68
-L/R encoders: 28 / 30
-L/R Setpoints: 218 / 182
-Target x: 10.00	Target y: 0.00	Target t: -1.46
-Encoders show movement of 0.19 cm
-X: 3.87 	Y: 0.17 	Heading: 3.43 		
-angle deviation is: 5.04
-Driving, 6.13 cm to target
-Nav deviation: 5.04
-L/R encoders: 30 / 27
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -1.60
-Encoders show movement of 0.18 cm
-X: 4.05 	Y: 0.18 	Heading: 2.07 		
-angle deviation is: 3.83
-Driving, 5.95 cm to target
-Nav deviation: 3.83
-L/R encoders: 29 / 27
-L/R Setpoints: 208 / 192
-Target x: 10.00	Target y: 0.00	Target t: -1.76
-Encoders show movement of 0.19 cm
-X: 4.25 	Y: 0.19 	Heading: 1.93 		
-angle deviation is: 3.82
-Driving, 5.76 cm to target
-Nav deviation: 3.82
-L/R encoders: 29 / 30
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -1.89
-Encoders show movement of 0.19 cm
-X: 4.44 	Y: 0.20 	Heading: 3.44 		
-angle deviation is: 5.46
-Driving, 5.56 cm to target
-Nav deviation: 5.46
-L/R encoders: 28 / 31
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -2.02
-Encoders show movement of 0.19 cm
-X: 4.63 	Y: 0.21 	Heading: 5.16 		
-angle deviation is: 7.38
-Driving, 5.37 cm to target
-Nav deviation: 7.38
-L/R encoders: 29 / 29
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -2.22
-Encoders show movement of 0.18 cm
-X: 4.81 	Y: 0.22 	Heading: 5.29 		
-angle deviation is: 7.76
-Driving, 5.19 cm to target
-Nav deviation: 7.76
-L/R encoders: 29 / 29
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -2.47
-Encoders show movement of 0.19 cm
-X: 5.01 	Y: 0.24 	Heading: 4.48 		
-angle deviation is: 7.25
-Driving, 5.00 cm to target
-Nav deviation: 7.25
-L/R encoders: 29 / 28
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -2.77
-Encoders show movement of 0.19 cm
-X: 5.20 	Y: 0.26 	Heading: 3.61 		
-angle deviation is: 6.68
-Driving, 4.81 cm to target
-Nav deviation: 6.68
-L/R encoders: 29 / 28
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -3.07
-Encoders show movement of 0.18 cm
-X: 5.38 	Y: 0.27 	Heading: 3.19 		
-angle deviation is: 6.51
-Driving, 4.63 cm to target
-Nav deviation: 6.51
-L/R encoders: 29 / 28
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -3.33
-Encoders show movement of 0.19 cm
-X: 5.58 	Y: 0.28 	Heading: 3.00 		
-angle deviation is: 6.62
-Driving, 4.43 cm to target
-Nav deviation: 6.62
-L/R encoders: 28 / 29
-L/R Setpoints: 212 / 188
-Target x: 10.00	Target y: 0.00	Target t: -3.61
-Encoders show movement of 0.18 cm
-X: 5.76 	Y: 0.29 	Heading: 2.81 		
-angle deviation is: 6.70
-Driving, 4.25 cm to target
-Nav deviation: 6.70
-L/R encoders: 29 / 27
-L/R Setpoints: 208 / 192
-Target x: 10.00	Target y: 0.00	Target t: -3.89
-Encoders show movement of 0.19 cm
-X: 5.95 	Y: 0.30 	Heading: 2.09 		
-angle deviation is: 6.30
-Driving, 4.06 cm to target
-Nav deviation: 6.30
-L/R encoders: 28 / 29
-L/R Setpoints: 210 / 190
-Target x: 10.00	Target y: 0.00	Target t: -4.21
-Encoders show movement of 0.19 cm
-X: 6.14 	Y: 0.31 	Heading: 3.04 		
-angle deviation is: 7.56
-Driving, 3.87 cm to target
-Nav deviation: 7.56
-L/R encoders: 29 / 31
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -4.53
-Encoders show movement of 0.19 cm
-X: 6.34 	Y: 0.32 	Heading: 4.55 		
-angle deviation is: 9.48
-Driving, 3.68 cm to target
-Nav deviation: 9.48
-L/R encoders: 28 / 29
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -4.93
-Encoders show movement of 0.19 cm
-X: 6.53 	Y: 0.33 	Heading: 4.76 		
-angle deviation is: 10.21
-Driving, 3.48 cm to target
-Nav deviation: 10.21
-L/R encoders: 29 / 28
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -5.45
-Encoders show movement of 0.19 cm
-X: 6.73 	Y: 0.35 	Heading: 3.60 		
-angle deviation is: 9.65
-Driving, 3.29 cm to target
-Nav deviation: 9.65
-L/R encoders: 28 / 29
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -6.05
-Encoders show movement of 0.21 cm
-X: 6.93 	Y: 0.36 	Heading: 4.07 		
-angle deviation is: 10.77
+Target x: 30.00	Target y: 0.00	Target t: 0.00
+Encoders show movement of 0.09 cm
+X: 0.09 	Y: 0.00 	T: 359.82 		
+Driving, 29.91 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 199 / 200
+Target x: 30.00	Target y: 0.00	Target t: 0.00
+Encoders show movement of 0.43 cm
+X: 0.51 	Y: -0.00 	T: 0.12 		
+Nav deviation: 0.12
+Driving, 29.49 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 200 / 199
+Target x: 30.00	Target y: 0.00	Target t: 0.00
+Encoders show movement of 1.28 cm
+X: 1.79 	Y: 0.00 	T: 2.22 		
+Nav deviation: 2.22
+Driving, 28.21 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 211 / 188
+Target x: 30.00	Target y: 0.00	Target t: -0.00
+Encoders show movement of 1.37 cm
+X: 3.16 	Y: 0.05 	T: 4.78 		
+Nav deviation: 4.90
+Driving, 26.84 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 224 / 175
+Target x: 30.00	Target y: 0.00	Target t: -0.12
+Encoders show movement of 1.28 cm
+X: 4.43 	Y: 0.16 	T: 5.91 		
+Nav deviation: 6.27
+Driving, 25.57 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 231 / 168
+Target x: 30.00	Target y: 0.00	Target t: -0.36
+Encoders show movement of 1.19 cm
+X: 5.62 	Y: 0.28 	T: 4.87 		
+Nav deviation: 5.54
+Driving, 24.38 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 227 / 172
+Target x: 30.00	Target y: 0.00	Target t: -0.67
+Encoders show movement of 1.11 cm
+X: 6.73 	Y: 0.38 	T: 2.60 		
+Nav deviation: 3.54
+Driving, 23.28 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 217 / 182
+Target x: 30.00	Target y: 0.00	Target t: -0.93
+Encoders show movement of 1.28 cm
+X: 8.00 	Y: 0.44 	T: 1.52 		
+Nav deviation: 2.65
+Driving, 22.00 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 213 / 186
+Target x: 30.00	Target y: 0.00	Target t: -1.14
+Encoders show movement of 1.28 cm
+X: 9.28 	Y: 0.47 	T: 1.75 		
+Nav deviation: 3.06
+Driving, 20.72 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 215 / 184
+Target x: 30.00	Target y: 0.00	Target t: -1.30
+Encoders show movement of 1.19 cm
+X: 10.48 	Y: 0.51 	T: 1.77 		
+Nav deviation: 3.25
+Driving, 19.53 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 216 / 183
+Target x: 30.00	Target y: 0.00	Target t: -1.49
+Encoders show movement of 1.19 cm
+X: 11.67 	Y: 0.54 	T: 1.22 		
+Nav deviation: 2.92
+Driving, 18.34 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 214 / 185
+Target x: 30.00	Target y: 0.00	Target t: -1.70
+Encoders show movement of 1.19 cm
+X: 12.87 	Y: 0.57 	T: 1.12 		
+Nav deviation: 3.03
+Driving, 17.14 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 215 / 184
+Target x: 30.00	Target y: 0.00	Target t: -1.90
+Encoders show movement of 1.11 cm
+X: 13.98 	Y: 0.59 	T: 0.24 		
+Nav deviation: 2.35
+Driving, 16.04 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 211 / 188
+Target x: 30.00	Target y: 0.00	Target t: -2.11
+Encoders show movement of 1.28 cm
+X: 15.26 	Y: 0.60 	T: 359.97 		
+Nav deviation: 2.29
+Driving, 14.76 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 211 / 188
+Target x: 30.00	Target y: 0.00	Target t: -2.32
+Encoders show movement of 1.19 cm
+X: 16.45 	Y: 0.60 	T: 1.61 		
+Nav deviation: 4.13
+Driving, 13.56 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 220 / 179
+Target x: 30.00	Target y: 0.00	Target t: -2.52
+Encoders show movement of 1.19 cm
+X: 17.64 	Y: 0.63 	T: 2.31 		
+Nav deviation: 5.23
+Driving, 12.37 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 226 / 173
+Target x: 30.00	Target y: 0.00	Target t: -2.92
+Encoders show movement of 1.19 cm
+X: 18.84 	Y: 0.68 	T: 0.75 		
+Nav deviation: 4.23
+Driving, 11.18 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 221 / 178
+Target x: 30.00	Target y: 0.00	Target t: -3.47
+Encoders show movement of 1.19 cm
+X: 20.03 	Y: 0.69 	T: 359.56 		
+Nav deviation: 3.53
+Driving, 9.99 cm to target
+forward vel is 199.83 	 targetv is 200.00 
+L/R Setpoints: 216 / 181
+Target x: 30.00	Target y: 0.00	Target t: -3.98
+Encoders show movement of 1.19 cm
+X: 21.23 	Y: 0.68 	T: 358.41 		
+Nav deviation: 2.87
+Driving, 8.80 cm to target
+forward vel is 175.99 	 targetv is 200.00 
+L/R Setpoints: 189 / 160
+Target x: 30.00	Target y: 0.00	Target t: -4.46
+Encoders show movement of 1.19 cm
+X: 22.42 	Y: 0.65 	T: 358.50 		
+Nav deviation: 3.40
+Driving, 7.61 cm to target
+forward vel is 152.13 	 targetv is 200.00 
+L/R Setpoints: 169 / 134
+Target x: 30.00	Target y: 0.00	Target t: -4.91
+Encoders show movement of 1.02 cm
+X: 23.45 	Y: 0.62 	T: 357.96 		
+Nav deviation: 3.40
+Driving, 6.58 cm to target
+forward vel is 131.69 	 targetv is 200.00 
+L/R Setpoints: 147 / 114
+Target x: 30.00	Target y: 0.00	Target t: -5.44
+Encoders show movement of 0.85 cm
+X: 24.30 	Y: 0.59 	T: 356.72 		
+Nav deviation: 2.67
+Driving, 5.73 cm to target
+forward vel is 114.66 	 targetv is 200.00 
+L/R Setpoints: 127 / 100
+Target x: 30.00	Target y: 0.00	Target t: -5.94
+Encoders show movement of 0.85 cm
+X: 25.15 	Y: 0.54 	T: 355.33 		
+Nav deviation: 1.74
+Driving, 4.88 cm to target
+forward vel is 97.61 	 targetv is 200.00 
+L/R Setpoints: 105 / 88
+Target x: 30.00	Target y: 0.00	Target t: -6.41
+Encoders show movement of 0.68 cm
+X: 25.83 	Y: 0.49 	T: 354.21 		
+Nav deviation: 0.90
+Driving, 4.20 cm to target
+forward vel is 83.97 	 targetv is 200.00 
+L/R Setpoints: 87 / 78
+Target x: 30.00	Target y: 0.00	Target t: -6.69
+Encoders show movement of 0.68 cm
+X: 26.51 	Y: 0.42 	T: 353.64 		
+Nav deviation: 0.51
+Driving, 3.52 cm to target
+forward vel is 70.32 	 targetv is 200.00 
+L/R Setpoints: 72 / 67
+Target x: 30.00	Target y: 0.00	Target t: -6.87
+Encoders show movement of 0.43 cm
+X: 26.93 	Y: 0.37 	T: 353.65 		
+Nav deviation: 0.59
 Driving, 3.09 cm to target
-Nav deviation: 10.77
-L/R encoders: 30 / 30
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -6.70
-Encoders show movement of 0.19 cm
-X: 7.13 	Y: 0.37 	Heading: 4.24 		
-angle deviation is: 11.66
-Driving, 2.90 cm to target
-Nav deviation: 11.66
-L/R encoders: 30 / 29
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -7.42
-Encoders show movement of 0.19 cm
-X: 7.32 	Y: 0.39 	Heading: 4.10 		
-angle deviation is: 12.35
-Driving, 2.71 cm to target
-Nav deviation: 12.35
-L/R encoders: 29 / 30
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -8.25
-Encoders show movement of 0.19 cm
-X: 7.52 	Y: 0.40 	Heading: 4.73 		
-angle deviation is: 13.93
-Driving, 2.52 cm to target
-Nav deviation: 13.93
-L/R encoders: 29 / 29
-L/R Setpoints: 216 / 184
-Target x: 10.00	Target y: 0.00	Target t: -9.20
-Encoders show movement of 0.19 cm
-X: 7.71 	Y: 0.42 	Heading: 4.38 		
-angle deviation is: 14.73
-Driving, 2.33 cm to target
-Nav deviation: 14.73
-L/R encoders: 29 / 28
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -10.35
-Encoders show movement of 0.21 cm
-X: 7.92 	Y: 0.43 	Heading: 4.56 		
-angle deviation is: 16.34
-Driving, 2.13 cm to target
-Nav deviation: 16.34
-L/R encoders: 29 / 29
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -11.78
-Encoders show movement of 0.19 cm
-X: 8.11 	Y: 0.45 	Heading: 4.29 		
-angle deviation is: 17.68
-Driving, 1.94 cm to target
-Nav deviation: 17.68
-L/R encoders: 30 / 30
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -13.39
-Encoders show movement of 0.21 cm
-X: 8.32 	Y: 0.47 	Heading: 4.28 		
-angle deviation is: 19.75
-Driving, 1.74 cm to target
-Nav deviation: 19.75
-L/R encoders: 30 / 30
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -15.47
-Encoders show movement of 0.19 cm
-X: 8.51 	Y: 0.48 	Heading: 4.29 		
-angle deviation is: 22.17
-Driving, 1.56 cm to target
-Nav deviation: 22.17
+forward vel is 61.78 	 targetv is 200.00 
+L/R Setpoints: 63 / 58
+Target x: 30.00	Target y: 0.00	Target t: -6.94
+Encoders show movement of 0.43 cm
+X: 27.36 	Y: 0.33 	T: 353.74 		
+releasing lock... current: (27.36, 0.33) 	 target: (30.00, 0.00) 
+Target x: 30.00	Target y: 0.00	Target t: -7.03
+Encoders show movement of 1.96 cm
+X: 29.31 	Y: 0.11 	T: 353.80 		
+releasing lock... current: (29.31, 0.11) 	 target: (30.00, 0.00) 
+Target x: 30.00	Target y: 30.00	Target t: 88.67
+Encoders show movement of 3.50 cm
+X: 32.79 	Y: -0.27 	T: 353.85 		
+Nav deviation: 101.41
 Nav angle deviation exceeded
-L/R Setpoints: 214 / 186
-Target x: 10.00	Target y: 0.00	Target t: -17.88
-Encoders show movement of 0.19 cm
-X: 8.71 	Y: 0.49 	Heading: 3.83 		
-angle deviation is: 24.75
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -20.92
-Encoders show movement of 0.13 cm
-X: 8.83 	Y: 0.50 	Heading: 3.90 		
-angle deviation is: 27.17
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.34 cm
+X: 33.13 	Y: -0.30 	T: 354.86 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.67 		
-angle deviation is: 25.95
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.51 cm
+X: 33.64 	Y: -0.35 	T: 5.53 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.75 		
-angle deviation is: 26.03
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.60 cm
+X: 34.23 	Y: -0.29 	T: 17.58 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.58 		
-angle deviation is: 25.85
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.68 cm
+X: 34.88 	Y: -0.08 	T: 29.64 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.53 		
-angle deviation is: 25.80
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.68 cm
+X: 35.47 	Y: 0.25 	T: 41.77 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.53 		
-angle deviation is: 25.80
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.60 cm
+X: 35.92 	Y: 0.65 	T: 53.87 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.53 		
-angle deviation is: 25.80
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.60 cm
+X: 36.27 	Y: 1.13 	T: 65.70 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.52 		
-angle deviation is: 25.79
+L/R Setpoints: -100 / 100
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.60 cm
+X: 36.52 	Y: 1.68 	T: 77.32 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.50 		
-angle deviation is: 25.77
+L/R Setpoints: -89 / 89
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.68 cm
+X: 36.67 	Y: 2.34 	T: 88.78 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.52 		
-angle deviation is: 25.79
+L/R Setpoints: -32 / 32
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.43 cm
+X: 36.68 	Y: 2.77 	T: 98.37 		
+Driving, 28.04 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 215 / 184
+Target x: 30.00	Target y: 30.00	Target t: 95.26
+Encoders show movement of 0.68 cm
+X: 36.58 	Y: 3.45 	T: 100.35 		
+Nav deviation: 3.56
+Driving, 27.36 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 182 / 217
+Target x: 30.00	Target y: 30.00	Target t: 103.91
+Encoders show movement of 1.37 cm
+X: 36.33 	Y: 4.79 	T: 100.13 		
+Nav deviation: 3.97
+Driving, 25.99 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 180 / 219
+Target x: 30.00	Target y: 30.00	Target t: 104.10
+Encoders show movement of 1.37 cm
+X: 36.09 	Y: 6.13 	T: 104.83 		
+Nav deviation: 0.51
+Driving, 24.63 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 202 / 197
+Target x: 30.00	Target y: 30.00	Target t: 104.32
+Encoders show movement of 1.37 cm
+X: 35.74 	Y: 7.45 	T: 108.35 		
+Nav deviation: 4.06
+Driving, 23.27 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 220 / 179
+Target x: 30.00	Target y: 30.00	Target t: 104.29
+Encoders show movement of 1.37 cm
+X: 35.31 	Y: 8.75 	T: 110.72 		
+Nav deviation: 6.68
+Driving, 21.91 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 233 / 166
+Target x: 30.00	Target y: 30.00	Target t: 104.04
+Encoders show movement of 1.19 cm
+X: 34.89 	Y: 9.87 	T: 110.00 		
+Nav deviation: 6.35
+Driving, 20.72 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 231 / 168
+Target x: 30.00	Target y: 30.00	Target t: 103.65
+Encoders show movement of 1.28 cm
+X: 34.45 	Y: 11.07 	T: 107.78 		
+Nav deviation: 4.54
+Driving, 19.45 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 222 / 177
+Target x: 30.00	Target y: 30.00	Target t: 103.23
+Encoders show movement of 1.28 cm
+X: 34.06 	Y: 12.29 	T: 106.19 		
+Nav deviation: 3.28
+Driving, 18.17 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 216 / 183
+Target x: 30.00	Target y: 30.00	Target t: 102.91
+Encoders show movement of 1.19 cm
+X: 33.73 	Y: 13.43 	T: 105.18 		
+Nav deviation: 2.49
+Driving, 16.98 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 212 / 187
+Target x: 30.00	Target y: 30.00	Target t: 102.68
+Encoders show movement of 1.37 cm
+X: 33.37 	Y: 14.75 	T: 105.13 		
+Nav deviation: 2.67
+Driving, 15.62 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 213 / 186
+Target x: 30.00	Target y: 30.00	Target t: 102.47
+Encoders show movement of 1.28 cm
+X: 33.04 	Y: 15.99 	T: 107.02 		
+Nav deviation: 4.79
+Driving, 14.34 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 223 / 176
+Target x: 30.00	Target y: 30.00	Target t: 102.23
+Encoders show movement of 1.37 cm
+X: 32.64 	Y: 17.29 	T: 106.70 		
+Nav deviation: 4.97
+Driving, 12.98 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 224 / 175
+Target x: 30.00	Target y: 30.00	Target t: 101.73
+Encoders show movement of 1.28 cm
+X: 32.27 	Y: 18.52 	T: 105.11 		
+Nav deviation: 3.93
+Driving, 11.70 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 219 / 180
+Target x: 30.00	Target y: 30.00	Target t: 101.18
+Encoders show movement of 1.19 cm
+X: 31.96 	Y: 19.67 	T: 103.81 		
+Nav deviation: 3.08
+Driving, 10.51 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 215 / 184
+Target x: 30.00	Target y: 30.00	Target t: 100.74
+Encoders show movement of 1.28 cm
+X: 31.65 	Y: 20.92 	T: 103.47 		
+Nav deviation: 3.16
+Driving, 9.23 cm to target
+forward vel is 184.66 	 targetv is 200.00 
+L/R Setpoints: 199 / 168
+Target x: 30.00	Target y: 30.00	Target t: 100.31
+Encoders show movement of 1.19 cm
+X: 31.37 	Y: 22.08 	T: 103.15 		
+Nav deviation: 3.31
+Driving, 8.04 cm to target
+forward vel is 160.81 	 targetv is 200.00 
+L/R Setpoints: 176 / 143
+Target x: 30.00	Target y: 30.00	Target t: 99.84
+Encoders show movement of 1.02 cm
+X: 31.14 	Y: 23.08 	T: 102.38 		
+Nav deviation: 3.02
+Driving, 7.02 cm to target
+forward vel is 140.37 	 targetv is 200.00 
+L/R Setpoints: 155 / 124
+Target x: 30.00	Target y: 30.00	Target t: 99.36
+Encoders show movement of 0.85 cm
+X: 30.96 	Y: 23.91 	T: 100.93 		
+Nav deviation: 1.99
+Driving, 6.17 cm to target
+forward vel is 123.33 	 targetv is 200.00 
+L/R Setpoints: 132 / 113
+Target x: 30.00	Target y: 30.00	Target t: 98.94
+Encoders show movement of 0.85 cm
+X: 30.80 	Y: 24.75 	T: 100.16 		
+Nav deviation: 1.54
+Driving, 5.31 cm to target
+forward vel is 106.27 	 targetv is 200.00 
+L/R Setpoints: 113 / 98
+Target x: 30.00	Target y: 30.00	Target t: 98.62
+Encoders show movement of 0.68 cm
+X: 30.68 	Y: 25.42 	T: 99.41 		
+Nav deviation: 1.02
+Driving, 4.63 cm to target
+forward vel is 92.62 	 targetv is 200.00 
+L/R Setpoints: 97 / 86
+Target x: 30.00	Target y: 30.00	Target t: 98.39
+Encoders show movement of 0.60 cm
+X: 30.58 	Y: 26.01 	T: 99.21 		
+Nav deviation: 0.97
+Driving, 4.03 cm to target
+forward vel is 80.68 	 targetv is 200.00 
+L/R Setpoints: 84 / 75
+Target x: 30.00	Target y: 30.00	Target t: 98.24
+Encoders show movement of 0.60 cm
+X: 30.48 	Y: 26.60 	T: 98.89 		
+Nav deviation: 0.81
+Driving, 3.44 cm to target
+forward vel is 68.73 	 targetv is 200.00 
+L/R Setpoints: 72 / 63
+Target x: 30.00	Target y: 30.00	Target t: 98.07
+Encoders show movement of 0.34 cm
+X: 30.43 	Y: 26.93 	T: 98.59 		
+Nav deviation: 0.60
+Driving, 3.10 cm to target
+forward vel is 61.91 	 targetv is 200.00 
+L/R Setpoints: 64 / 57
+Target x: 30.00	Target y: 30.00	Target t: 97.98
+Encoders show movement of 0.34 cm
+X: 30.38 	Y: 27.27 	T: 98.23 		
+releasing lock... current: (30.38, 27.27) 	 target: (30.00, 30.00) 
+Target x: 30.00	Target y: 30.00	Target t: 97.91
+Encoders show movement of 2.05 cm
+X: 30.09 	Y: 29.30 	T: 98.01 		
+releasing lock... current: (30.09, 29.30) 	 target: (30.00, 30.00) 
+Target x: 0.00	Target y: 30.00	Target t: 178.67
+Encoders show movement of 3.50 cm
+X: 29.60 	Y: 32.76 	T: 97.56 		
+Nav deviation: 87.77
+Nav angle deviation exceeded
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.52 		
-angle deviation is: 25.79
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.34 cm
+X: 29.55 	Y: 33.10 	T: 98.33 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.51 		
-angle deviation is: 25.78
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.60 cm
+X: 29.47 	Y: 33.69 	T: 108.75 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.51 		
-angle deviation is: 25.78
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.77 cm
+X: 29.22 	Y: 34.42 	T: 120.59 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.51 		
-angle deviation is: 25.78
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.60 cm
+X: 28.92 	Y: 34.93 	T: 132.66 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.52 		
-angle deviation is: 25.79
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.60 cm
+X: 28.51 	Y: 35.37 	T: 144.61 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.51 		
-angle deviation is: 25.78
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.68 cm
+X: 27.95 	Y: 35.77 	T: 156.57 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.51 		
-angle deviation is: 25.78
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.60 cm
+X: 27.41 	Y: 36.01 	T: 168.16 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.52 		
-angle deviation is: 25.79
+L/R Setpoints: -85 / 85
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.51 cm
+X: 26.91 	Y: 36.11 	T: 179.14 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.53 		
-angle deviation is: 25.80
+L/R Setpoints: -30 / 30
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.34 cm
+X: 26.56 	Y: 36.12 	T: 187.93 		
+Driving, 27.26 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 212 / 187
+Target x: 0.00	Target y: 30.00	Target t: -174.67
+Encoders show movement of 0.51 cm
+X: 26.06 	Y: 36.05 	T: 189.54 		
+Nav deviation: 3.52
+Driving, 26.75 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 182 / 217
+Target x: 0.00	Target y: 30.00	Target t: -166.94
+Encoders show movement of 1.28 cm
+X: 24.79 	Y: 35.83 	T: 188.67 		
+Nav deviation: 4.57
+Driving, 25.47 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 177 / 222
+Target x: 0.00	Target y: 30.00	Target t: -166.76
+Encoders show movement of 1.28 cm
+X: 23.53 	Y: 35.64 	T: 195.21 		
+Nav deviation: 1.73
+Driving, 24.20 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 208 / 191
+Target x: 0.00	Target y: 30.00	Target t: -166.52
+Encoders show movement of 1.37 cm
+X: 22.21 	Y: 35.28 	T: 201.15 		
+Nav deviation: 7.77
+Driving, 22.83 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 238 / 161
+Target x: 0.00	Target y: 30.00	Target t: -166.62
+Encoders show movement of 1.28 cm
+X: 21.02 	Y: 34.82 	T: 202.66 		
+Nav deviation: 9.74
+Driving, 21.56 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 248 / 151
+Target x: 0.00	Target y: 30.00	Target t: -167.08
+Encoders show movement of 1.28 cm
+X: 19.84 	Y: 34.33 	T: 199.64 		
+Nav deviation: 7.34
+Driving, 20.30 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 236 / 163
+Target x: 0.00	Target y: 30.00	Target t: -167.69
+Encoders show movement of 1.37 cm
+X: 18.55 	Y: 33.87 	T: 192.33 		
+Nav deviation: 0.55
+Driving, 18.95 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 202 / 197
+Target x: 0.00	Target y: 30.00	Target t: -168.22
+Encoders show movement of 1.37 cm
+X: 17.22 	Y: 33.58 	T: 187.52 		
+Nav deviation: 4.22
+Driving, 17.58 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 178 / 221
+Target x: 0.00	Target y: 30.00	Target t: -168.26
+Encoders show movement of 1.37 cm
+X: 15.86 	Y: 33.40 	T: 191.38 		
+Nav deviation: 0.71
+Driving, 16.22 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 196 / 203
+Target x: 0.00	Target y: 30.00	Target t: -167.91
+Encoders show movement of 1.45 cm
+X: 14.44 	Y: 33.11 	T: 199.10 		
+Nav deviation: 6.94
+Driving, 14.77 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 234 / 165
+Target x: 0.00	Target y: 30.00	Target t: -167.84
+Encoders show movement of 1.28 cm
+X: 13.23 	Y: 32.69 	T: 203.45 		
+Nav deviation: 11.94
+Driving, 13.50 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 259 / 140
+Target x: 0.00	Target y: 30.00	Target t: -168.49
+Encoders show movement of 1.28 cm
+X: 12.06 	Y: 32.18 	T: 201.07 		
+Nav deviation: 10.81
+Driving, 12.25 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 254 / 145
+Target x: 0.00	Target y: 30.00	Target t: -169.73
+Encoders show movement of 1.19 cm
+X: 10.94 	Y: 31.75 	T: 195.18 		
+Nav deviation: 6.07
+Driving, 11.08 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 230 / 169
+Target x: 0.00	Target y: 30.00	Target t: -170.89
+Encoders show movement of 1.11 cm
+X: 9.87 	Y: 31.46 	T: 191.08 		
+Nav deviation: 2.64
+Driving, 9.98 cm to target
+forward vel is 199.60 	 targetv is 200.00 
+L/R Setpoints: 212 / 185
+Target x: 0.00	Target y: 30.00	Target t: -171.56
+Encoders show movement of 1.37 cm
+X: 8.53 	Y: 31.20 	T: 190.19 		
+Nav deviation: 2.17
+Driving, 8.62 cm to target
+forward vel is 172.33 	 targetv is 200.00 
+L/R Setpoints: 182 / 161
+Target x: 0.00	Target y: 30.00	Target t: -171.98
+Encoders show movement of 1.19 cm
+X: 7.36 	Y: 30.99 	T: 191.49 		
+Nav deviation: 3.82
+Driving, 7.42 cm to target
+forward vel is 148.46 	 targetv is 200.00 
+L/R Setpoints: 167 / 128
+Target x: 0.00	Target y: 30.00	Target t: -172.33
+Encoders show movement of 1.02 cm
+X: 6.35 	Y: 30.79 	T: 192.27 		
+Nav deviation: 5.22
+Driving, 6.40 cm to target
+forward vel is 128.03 	 targetv is 200.00 
+L/R Setpoints: 154 / 101
+Target x: 0.00	Target y: 30.00	Target t: -172.94
+Encoders show movement of 0.77 cm
+X: 5.60 	Y: 30.62 	T: 190.80 		
+Nav deviation: 4.45
+Driving, 5.64 cm to target
+forward vel is 112.74 	 targetv is 200.00 
+L/R Setpoints: 134 / 89
+Target x: 0.00	Target y: 30.00	Target t: -173.65
+Encoders show movement of 0.85 cm
+X: 4.76 	Y: 30.46 	T: 187.50 		
+Nav deviation: 1.94
+Driving, 4.79 cm to target
+forward vel is 95.74 	 targetv is 200.00 
+L/R Setpoints: 104 / 85
+Target x: 0.00	Target y: 30.00	Target t: -174.44
+Encoders show movement of 0.60 cm
+X: 4.17 	Y: 30.39 	T: 184.46 		
+Nav deviation: 0.81
+Driving, 4.19 cm to target
+forward vel is 83.80 	 targetv is 200.00 
+L/R Setpoints: 78 / 87
+Target x: 0.00	Target y: 30.00	Target t: -174.72
+Encoders show movement of 0.60 cm
+X: 3.58 	Y: 30.34 	T: 184.05 		
+Nav deviation: 1.37
+Driving, 3.59 cm to target
+forward vel is 71.85 	 targetv is 200.00 
+L/R Setpoints: 64 / 77
+Target x: 0.00	Target y: 30.00	Target t: -174.59
+Encoders show movement of 0.43 cm
+X: 3.15 	Y: 30.31 	T: 185.70 		
+Nav deviation: 0.10
+Driving, 3.17 cm to target
+forward vel is 63.32 	 targetv is 200.00 
+L/R Setpoints: 63 / 62
+Target x: 0.00	Target y: 30.00	Target t: -174.40
+Encoders show movement of 0.43 cm
+X: 2.73 	Y: 30.27 	T: 187.68 		
+releasing lock... current: (2.73, 30.27) 	 target: (0.00, 30.00) 
+Target x: 0.00	Target y: 30.00	Target t: -174.42
+Encoders show movement of 2.05 cm
+X: 0.70 	Y: 29.99 	T: 188.43 		
+releasing lock... current: (0.70, 29.99) 	 target: (0.00, 30.00) 
+Target x: 0.00	Target y: 0.00	Target t: -91.33
+Encoders show movement of 3.67 cm
+X: -2.93 	Y: 29.45 	T: 188.98 		
+Nav deviation: 86.71
+Nav angle deviation exceeded
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.55 		
-angle deviation is: 25.83
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.34 cm
+X: -3.27 	Y: 29.40 	T: 190.39 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.54 		
-angle deviation is: 25.81
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.43 cm
+X: -3.69 	Y: 29.32 	T: 201.54 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.54 		
-angle deviation is: 25.81
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.60 cm
+X: -4.25 	Y: 29.11 	T: 212.25 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.54 		
-angle deviation is: 25.82
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.68 cm
+X: -4.82 	Y: 28.74 	T: 223.34 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.55 		
-angle deviation is: 25.82
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.68 cm
+X: -5.32 	Y: 28.27 	T: 234.50 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.55 		
-angle deviation is: 25.83
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.60 cm
+X: -5.67 	Y: 27.79 	T: 245.22 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.57 		
-angle deviation is: 25.84
+L/R Setpoints: -100 / 100
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.60 cm
+X: -5.92 	Y: 27.24 	T: 256.65 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.57 		
-angle deviation is: 25.84
+L/R Setpoints: -95 / 95
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.60 cm
+X: -6.05 	Y: 26.66 	T: 267.38 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.58 		
-angle deviation is: 25.85
+L/R Setpoints: -41 / 41
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.43 cm
+X: -6.07 	Y: 26.24 	T: 278.02 		
+Driving, 26.93 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 211 / 188
+Target x: 0.00	Target y: 0.00	Target t: -84.31
+Encoders show movement of 0.51 cm
+X: -6.00 	Y: 25.73 	T: 281.62 		
+Nav deviation: 1.51
+Driving, 26.42 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 192 / 207
+Target x: 0.00	Target y: 0.00	Target t: -76.87
+Encoders show movement of 1.19 cm
+X: -5.76 	Y: 24.56 	T: 283.22 		
+Nav deviation: 0.02
+Driving, 25.23 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 200 / 199
+Target x: 0.00	Target y: 0.00	Target t: -76.80
+Encoders show movement of 1.19 cm
+X: -5.49 	Y: 23.40 	T: 287.76 		
+Nav deviation: 4.56
+Driving, 24.03 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 222 / 177
+Target x: 0.00	Target y: 0.00	Target t: -76.80
+Encoders show movement of 1.28 cm
+X: -5.10 	Y: 22.18 	T: 290.49 		
+Nav deviation: 7.54
+Driving, 22.76 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 237 / 162
+Target x: 0.00	Target y: 0.00	Target t: -77.05
+Encoders show movement of 1.11 cm
+X: -4.71 	Y: 21.14 	T: 290.33 		
+Nav deviation: 7.77
+Driving, 21.66 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 238 / 161
+Target x: 0.00	Target y: 0.00	Target t: -77.44
+Encoders show movement of 1.19 cm
+X: -4.29 	Y: 20.02 	T: 287.84 		
+Nav deviation: 5.73
+Driving, 20.47 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 228 / 171
+Target x: 0.00	Target y: 0.00	Target t: -77.89
+Encoders show movement of 1.11 cm
+X: -3.95 	Y: 18.96 	T: 285.82 		
+Nav deviation: 4.04
+Driving, 19.37 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 220 / 179
+Target x: 0.00	Target y: 0.00	Target t: -78.22
+Encoders show movement of 1.19 cm
+X: -3.63 	Y: 17.81 	T: 285.74 		
+Nav deviation: 4.22
+Driving, 18.18 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 221 / 178
+Target x: 0.00	Target y: 0.00	Target t: -78.48
+Encoders show movement of 1.11 cm
+X: -3.33 	Y: 16.74 	T: 284.85 		
+Nav deviation: 3.61
+Driving, 17.07 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 218 / 181
+Target x: 0.00	Target y: 0.00	Target t: -78.76
+Encoders show movement of 1.19 cm
+X: -3.02 	Y: 15.59 	T: 284.69 		
+Nav deviation: 3.72
+Driving, 15.88 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 218 / 181
+Target x: 0.00	Target y: 0.00	Target t: -79.03
+Encoders show movement of 1.11 cm
+X: -2.74 	Y: 14.52 	T: 284.76 		
+Nav deviation: 4.07
+Driving, 14.77 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 220 / 179
+Target x: 0.00	Target y: 0.00	Target t: -79.31
+Encoders show movement of 1.11 cm
+X: -2.46 	Y: 13.44 	T: 283.83 		
+Nav deviation: 3.46
+Driving, 13.67 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 217 / 182
+Target x: 0.00	Target y: 0.00	Target t: -79.64
+Encoders show movement of 1.19 cm
+X: -2.17 	Y: 12.28 	T: 283.24 		
+Nav deviation: 3.21
+Driving, 12.47 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 216 / 183
+Target x: 0.00	Target y: 0.00	Target t: -79.97
+Encoders show movement of 1.19 cm
+X: -1.90 	Y: 11.12 	T: 283.15 		
+Nav deviation: 3.46
+Driving, 11.28 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 217 / 182
+Target x: 0.00	Target y: 0.00	Target t: -80.31
+Encoders show movement of 1.11 cm
+X: -1.65 	Y: 10.04 	T: 284.16 		
+Nav deviation: 4.84
+Driving, 10.17 cm to target
+forward vel is 200.00 	 targetv is 200.00 
+L/R Setpoints: 224 / 175
+Target x: 0.00	Target y: 0.00	Target t: -80.69
+Encoders show movement of 1.02 cm
+X: -1.40 	Y: 9.05 	T: 283.48 		
+Nav deviation: 4.71
+Driving, 9.15 cm to target
+forward vel is 183.10 	 targetv is 200.00 
+L/R Setpoints: 206 / 159
+Target x: 0.00	Target y: 0.00	Target t: -81.23
+Encoders show movement of 1.11 cm
+X: -1.14 	Y: 7.97 	T: 282.96 		
+Nav deviation: 4.84
+Driving, 8.05 cm to target
+forward vel is 161.00 	 targetv is 200.00 
+L/R Setpoints: 184 / 135
+Target x: 0.00	Target y: 0.00	Target t: -81.88
+Encoders show movement of 1.11 cm
+X: -0.89 	Y: 6.89 	T: 281.77 		
+Nav deviation: 4.42
+Driving, 6.95 cm to target
+forward vel is 138.90 	 targetv is 200.00 
+L/R Setpoints: 160 / 115
+Target x: 0.00	Target y: 0.00	Target t: -82.65
+Encoders show movement of 0.94 cm
+X: -0.70 	Y: 5.97 	T: 279.05 		
+Nav deviation: 2.38
+Driving, 6.01 cm to target
+forward vel is 120.19 	 targetv is 200.00 
+L/R Setpoints: 131 / 108
+Target x: 0.00	Target y: 0.00	Target t: -83.34
+Encoders show movement of 0.68 cm
+X: -0.59 	Y: 5.29 	T: 277.31 		
+Nav deviation: 0.96
+Driving, 5.33 cm to target
+forward vel is 106.55 	 targetv is 200.00 
+L/R Setpoints: 110 / 101
+Target x: 0.00	Target y: 0.00	Target t: -83.64
+Encoders show movement of 0.77 cm
+X: -0.49 	Y: 4.53 	T: 276.60 		
+Nav deviation: 0.41
+Driving, 4.56 cm to target
+forward vel is 91.20 	 targetv is 200.00 
+L/R Setpoints: 93 / 88
+Target x: 0.00	Target y: 0.00	Target t: -83.81
+Encoders show movement of 0.60 cm
+X: -0.42 	Y: 3.94 	T: 276.65 		
+Nav deviation: 0.52
+Driving, 3.96 cm to target
+forward vel is 79.25 	 targetv is 200.00 
+L/R Setpoints: 81 / 76
+Target x: 0.00	Target y: 0.00	Target t: -83.87
+Encoders show movement of 0.51 cm
+X: -0.36 	Y: 3.43 	T: 277.19 		
+Nav deviation: 1.14
+Driving, 3.45 cm to target
+forward vel is 69.01 	 targetv is 200.00 
+L/R Setpoints: 74 / 63
+Target x: 0.00	Target y: 0.00	Target t: -83.94
+Encoders show movement of 0.43 cm
+X: -0.31 	Y: 3.01 	T: 277.41 		
+Nav deviation: 1.51
+Driving, 3.02 cm to target
+forward vel is 60.48 	 targetv is 200.00 
+L/R Setpoints: 67 / 52
+Target x: 0.00	Target y: 0.00	Target t: -84.10
+Encoders show movement of 0.34 cm
+X: -0.27 	Y: 2.67 	T: 277.67 		
+releasing lock... current: (-0.27, 2.67) 	 target: (0.00, 0.00) 
+Target x: 0.00	Target y: 0.00	Target t: -84.30
+Encoders show movement of 1.79 cm
+X: -0.03 	Y: 0.89 	T: 276.97 		
+releasing lock... current: (-0.03, 0.89) 	 target: (0.00, 0.00) 
+Target x: 0.00	Target y: 0.00	Target t: -88.24
+Encoders show movement of 3.24 cm
+X: 0.37 	Y: -2.33 	T: 276.15 		
+releasing lock... current: (0.37, -2.33) 	 target: (0.00, 0.00) 
+Target x: 0.00	Target y: 0.00	Target t: 98.94
+Encoders show movement of 4.61 cm
+X: 0.86 	Y: -6.91 	T: 275.42 		
+Nav deviation: 178.33
+Nav angle deviation exceeded
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.60 		
-angle deviation is: 25.87
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.26 cm
+X: 0.88 	Y: -7.16 	T: 273.94 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.61 		
-angle deviation is: 25.88
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: 0.92 	Y: -7.67 	T: 264.01 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.61 		
-angle deviation is: 25.88
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: 0.87 	Y: -8.18 	T: 252.72 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.62 		
-angle deviation is: 25.89
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: 0.71 	Y: -8.67 	T: 242.30 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.64 		
-angle deviation is: 25.91
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: 0.48 	Y: -9.12 	T: 230.99 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.62 		
-angle deviation is: 25.89
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.60 cm
+X: 0.10 	Y: -9.59 	T: 220.40 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.63 		
-angle deviation is: 25.90
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.60 cm
+X: -0.36 	Y: -9.97 	T: 209.57 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.62 		
-angle deviation is: 25.89
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -0.80 	Y: -10.23 	T: 198.68 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.64 		
-angle deviation is: 25.91
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -1.29 	Y: -10.39 	T: 187.82 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.62 		
-angle deviation is: 25.89
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -1.79 	Y: -10.46 	T: 176.67 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.62 		
-angle deviation is: 25.90
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -2.30 	Y: -10.43 	T: 167.80 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.63 		
-angle deviation is: 25.91
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -2.80 	Y: -10.32 	T: 157.34 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.62 		
-angle deviation is: 25.89
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -3.28 	Y: -10.13 	T: 147.76 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.63 		
-angle deviation is: 25.90
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.60 cm
+X: -3.78 	Y: -9.81 	T: 137.50 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.63 		
-angle deviation is: 25.90
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.51 cm
+X: -4.16 	Y: -9.46 	T: 128.23 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.65 		
-angle deviation is: 25.92
+L/R Setpoints: 100 / -100
+Target x: 0.00	Target y: 0.00	Target t: 97.09
+Encoders show movement of 0.43 cm
+X: -4.42 	Y: -9.13 	T: 120.46 		
 Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Target t: -23.27
-Encoders show movement of 0.00 cm
-X: 8.83 	Y: 0.50 	Heading: 2.54 		
-angle deviation is: 25.81
-Rotating
-L/R Setpoints: 0 / 0
-Target x: 10.00	Target y: 0.00	Targ
+L/R Setpoints: 100 / -100
+Target 

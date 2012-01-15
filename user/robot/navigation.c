@@ -17,11 +17,11 @@
 #define NAV_DRV_KI              0
 #define NAV_DRV_KD              0
 
-#define NAV_FWD_GAIN            00
+#define NAV_FWD_GAIN            20
 
 // "Close-enough" angle and distance
 // POS_EPS is a distance squared
-#define NAV_POS_EPS             1.0
+#define NAV_POS_EPS             3.0
 #define NAV_ANG_EPS             5.0
 
 // Maximum angular error before switching from front drive
@@ -141,6 +141,8 @@ int isMovementComplete(void) {
 void waitForMovementComplete(void) {
     acquire(&nav_done_lock);
     release(&nav_done_lock);
+    pause(50);
+    
 }
 
 
@@ -297,8 +299,11 @@ int nav_loop(void) {
                     square(current_y - target_y));
                     
         if (dist <= NAV_POS_EPS) {
-            // Done
+	  printf("releasing lock... current: (%.2f, %.2f) \t target: (%.2f, %.2f) \n", current_x,current_y,target_x,target_y);
             release(&nav_done_lock);
+	    release(&nav_data_lock);
+	    pause(10);
+	    continue;
         }
         
         // Change states if necessary
@@ -333,7 +338,7 @@ int nav_loop(void) {
 
     	    left_setpoint = forward_vel;
             right_setpoint = forward_vel;
-
+	    printf("forward vel is %.2f \t targetv is %.2f \n", forward_vel, target_v);
             update_pid(&rotate_pid);
     	    //update_pid(&drive_pid);
         }

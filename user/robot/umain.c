@@ -17,17 +17,22 @@ int umain(void) {
     
     nav_start();
         
-    //moveToPoint(30, 0, 200);
-    turnToHeading(90);
+    moveToPoint(30, 0, 200);
+    //turnToHeading(90);
     waitForMovementComplete();
     
-    while (1) {}
+    //while (1) {}
     
     moveToPoint(30, 30, 200);
+   pause(50);
     waitForMovementComplete();
+
+  
     
     moveToPoint(00, 30, 200);
-    waitForMovementComplete();
+   pause(50);
+     waitForMovementComplete();
+
     
     moveToPoint(00, 00, 200);
     waitForMovementComplete();
