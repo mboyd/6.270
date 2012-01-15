@@ -12,6 +12,18 @@ void platform_init(void) {
 }
 
 void setLRMotors(int16_t l_vel, int16_t r_vel) {
+    if (l_vel > 255) {
+        l_vel = 255;
+    } else if (l_vel < -255) {
+        l_vel = -255;
+    }
+    
+    if (r_vel > 255) {
+        r_vel = 255;
+    } else if (r_vel < -255) {
+        r_vel = -255;
+    }
+    
     motor_group_set_vel(motor_left, l_vel);
     motor_group_set_vel(motor_right, r_vel);
 }

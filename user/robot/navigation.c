@@ -9,15 +9,15 @@
 #include <math.h>
 
 // Tunable parameters
-#define NAV_ROT_KP              -3
+#define NAV_ROT_KP              -5
 #define NAV_ROT_KI              0
-#define NAV_ROT_KD              .5
+#define NAV_ROT_KD              0
 
-#define NAV_DRV_KP              -2
+#define NAV_DRV_KP              -0
 #define NAV_DRV_KI              0
 #define NAV_DRV_KD              0
 
-#define NAV_FWD_GAIN            100
+#define NAV_FWD_GAIN            00
 
 // "Close-enough" angle and distance
 // POS_EPS is a distance squared
@@ -28,7 +28,7 @@
 // to in-place pivot (degrees)
 #define NAV_ANG_DRV_LMT         20.0
 
-#define NAV_THREAD_PRIORITY     100
+#define NAV_THREAD_PRIORITY     10
 
 #define VPS_PER_CM              22.3972
 
@@ -60,6 +60,27 @@ uint32_t vps_last_update;
 struct pid_controller rotate_pid;
 struct pid_controller drive_pid;
 
+float normalize_angle(float angle) {
+    while (angle > 360) {
+        angle -= 360;
+    }
+    
+    while (angle <= 0) {
+        angle += 360;
+    }
+    return angle;
+}
+
+float angle_difference(float a1, float a2) {
+    float t = normalize_angle(a1 - a2);
+    if (t > 180) {
+        return 360 - t;
+    } else {
+        return t;
+    }
+
+}
+
 /*
  * API calls
  */
@@ -71,7 +92,7 @@ void turnToHeading(float t) {
     target_x = current_x;
     target_y = current_y;
     
-    target_t = t;
+    target_t = normalize_angle(t);
     release(&nav_data_lock);
 }
 
@@ -96,7 +117,7 @@ void setTarget(float x, float y, float t, float v) {
     acquire(&nav_data_lock);
     target_x = x;
     target_y = y;
-    target_t = t;
+    target_t = normalize_angle(t);
     target_v = v;
     left_setpoint = v;
     right_setpoint = v;
@@ -128,29 +149,42 @@ void waitForMovementComplete(void) {
  */
 
 float rotate_pid_input(void) {
-    // TODO: sign errors
-    return current_t - target_t;
+    float temp_t = fmod(current_t - target_t, 360);
+    if(temp_t > 180)
+    {
+        temp_t -= 360;
+    }
+    else if(temp_t < -180)
+    {
+        temp_t += 360;
+    }
+    return temp_t;
 }
 
 void rotate_pid_output(float output) {
-    // TODO: sign errors
+    if (output > 100) {
+        output = 100;
+    } else if (output < -100) {
+        output = -100;
+    }
+    
     left_setpoint += output;
     right_setpoint -= output;
 }
 
 float drive_pid_input(void) {
-    // TODO: sign errors
     uint16_t l_enc = encoder_read(L_ENCODER_PORT);
     
     uint16_t r_enc = encoder_read(R_ENCODER_PORT);
     
     printf("L/R encoders: %u / %u\n", l_enc, r_enc);
     
+    
+    
     return (float) (r_enc - l_enc);
 }
 
 void drive_pid_output(float output) {
-    // TOOD: sign errors
     left_setpoint += output;
     right_setpoint -= output;
 }
@@ -158,7 +192,7 @@ void drive_pid_output(float output) {
 void vps_update(void) {
     current_x = objects[0].x * VPS_PER_CM;
     current_y = objects[0].y * VPS_PER_CM;
-    current_t = objects[0].theta;
+    current_t = normalize_angle(objects[0].theta);
     
     vps_last_update = position_microtime[0];
 }
@@ -200,6 +234,7 @@ int nav_init(void) {
     
     if (vps_last_update != position_microtime[0]) {
         vps_update();
+        gyro_set_degrees(current_t);
         printf("done.\n");
     } else {
         printf("timeout.\n");
@@ -216,6 +251,32 @@ int nav_start(void) {
     return 0;
 }
 
+void update_position() {
+    int16_t l_enc = encoder_read(L_ENCODER_PORT);
+    int16_t r_enc = encoder_read(R_ENCODER_PORT);
+    float enc_dist = (l_enc + r_enc) / (2.0 * TICKS_PER_CM);
+    
+    current_x += enc_dist * cos(current_t * M_PI / 180); // Use old heading
+    current_y += enc_dist * sin(current_t * M_PI / 180);
+    
+    if (nav_state == DRIVE) {
+        target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
+    }
+    
+    printf("Encoders show movement of %.2f cm\n", enc_dist);
+    
+    // Check for new VPS fix
+    copy_objects();
+    if (position_microtime[0] != vps_last_update) {
+        printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
+        vps_update();
+    }
+    
+    current_t = normalize_angle(gyro_get_degrees());
+    
+    printf("X: %.2f \tY: %.2f \tT: %.2f \t\t\n", current_x, current_y, current_t);
+}
+
 int nav_loop(void) {
     acquire(&nav_done_lock);
     while (1) {
@@ -226,91 +287,66 @@ int nav_loop(void) {
         
         printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
         
-        //left_setpoint = 0;
-        //right_setpoint = 0;
+        left_setpoint = 0;
+        right_setpoint = 0;
         
         // Update position estimate
-        int16_t l_enc = encoder_read(L_ENCODER_PORT);
-        int16_t r_enc = encoder_read(R_ENCODER_PORT);
-        float enc_dist = (l_enc + r_enc) / (2.0 * TICKS_PER_CM);
+        update_position();
         
-        current_x += enc_dist * cos(current_t * M_PI / 180); // Use old heading
-        current_y += enc_dist * sin(current_t * M_PI / 180);
-
-	target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
-        
-        printf("Encoders show movement of %.2f cm\n", enc_dist);
-        
-        // Check for new VPS fix
-        copy_objects();
-        if (position_microtime[0] != vps_last_update) {
-            printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
-            vps_update();
+        float dist = sqrt(square(current_x - target_x) + 
+                    square(current_y - target_y));
+                    
+        if (dist <= NAV_POS_EPS) {
+            // Done
+            release(&nav_done_lock);
         }
         
-        current_t = gyro_get_degrees();
-        printf("X: %.2f \tY: %.2f \tHeading: %.2f \t\t\n", current_x, current_y, current_t);
-        printf("angle deviation is: %.2f\n", fmod(fabs(current_t - target_t),360));
+        // Change states if necessary
 
         if (nav_state == ROTATE) {
-	  left_setpoint = 0;
-	  right_setpoint = 0;
-            if (fmod(fabs(current_t - target_t), 360) <= NAV_ANG_EPS) {
-                nav_state = DRIVE;
 
-		left_setpoint = target_v;
-		right_setpoint = target_v;
-		printf("left setpoint is: %.2f \t right setpoint is: %.2f target_v is: %.2f\n", left_setpoint, right_setpoint,target_v);
-                printf("Done rotating\n");
-                goto done;
+            if (angle_difference(current_t, target_t) <= NAV_ANG_EPS) {
+                nav_state = DRIVE;
             }
-            
-            //update_pid(&rotate_pid);
-            printf("Rotating\n");
         
         } else if (nav_state == DRIVE) {
-            float dist = sqrt(square(current_x - target_x) + 
-                        square(current_y - target_y));
+                        
+            printf("Nav deviation: %.2f\n", angle_difference(current_t, target_t));
             
-            printf("Driving, %.2f cm to target\n", dist);
-            
-            printf("Nav deviation: %.2f\n", fmod(fabs(current_t - target_t), 360));
-            
-            if (fmod(fabs(current_t - target_t), 360) >= NAV_ANG_DRV_LMT) {
+            if (angle_difference(current_t, target_t) >= NAV_ANG_DRV_LMT) {
                 nav_state = ROTATE;
                 printf("Nav angle deviation exceeded\n");
-                goto done;
             }
-            
-            if (dist <= NAV_POS_EPS) {
-                // Done
-                release(&nav_done_lock);
-                goto done;
-            }
-            
-
-	    //            float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
-            
-	    // left_setpoint = forward_vel;
-            //right_setpoint = forward_vel;
-            
-            //update_pid(&rotate_pid);
-	    update_pid(&drive_pid);
             
         }
         
-        done:
+        // Execute
+        
+        if (nav_state == ROTATE) {
+            update_pid(&rotate_pid);
+            printf("Rotating\n");
+            
+        } else if (nav_state == DRIVE) {
+            printf("Driving, %.2f cm to target\n", dist);
+            
+            float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
+
+    	    left_setpoint = forward_vel;
+            right_setpoint = forward_vel;
+
+            update_pid(&rotate_pid);
+    	    //update_pid(&drive_pid);
+        }
         
         release(&nav_data_lock);
         
-        printf("L/R Setpoints: %u / %u\n", left_setpoint, right_setpoint);
+        printf("L/R Setpoints: %i / %i\n", left_setpoint, right_setpoint);
         
         encoder_reset(L_ENCODER_PORT);
         encoder_reset(R_ENCODER_PORT);
 
         setLRMotors(left_setpoint, right_setpoint);
 	
-	//        pause(50);
     }
     return 0;
 }

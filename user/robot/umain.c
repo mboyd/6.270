@@ -16,13 +16,21 @@ int umain(void) {
     printf("Hello, world!\n");
     
     nav_start();
+        
+    //moveToPoint(30, 0, 200);
+    turnToHeading(90);
+    waitForMovementComplete();
     
-    printf("Nav started, setting coords\n");
-
-    moveToPoint(10, 0, 200);
-    //turnToHeading(45);
-
-    printf("Coords set\n");
+    while (1) {}
+    
+    moveToPoint(30, 30, 200);
+    waitForMovementComplete();
+    
+    moveToPoint(00, 30, 200);
+    waitForMovementComplete();
+    
+    moveToPoint(00, 00, 200);
+    waitForMovementComplete();
     
     //while (1) {
     //    copy_objects();
