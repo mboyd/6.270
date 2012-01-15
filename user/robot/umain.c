@@ -16,32 +16,34 @@ int umain(void) {
     printf("Hello, world!\n");
     
     nav_start();
-        
-    moveToPoint(30, 0, 200);
-    //turnToHeading(90);
-    waitForMovementComplete();
     
-    //while (1) {}
+    //turnToHeading(0);
+    //waitForMovement();
+    //
+    //float x, y, t;
+    //getPosition(&x, &y, &t);
+    //    
+    //moveToPoint(x+30, y, 200);
+    //waitForMovement();
+    //
+    //return 0;
+    //
+    //moveToPoint(30, 30, 200);
+    //waitForMovement();
+    //
+    //moveToPoint(00, 30, 200);
+    //waitForMovement();
+    //
+    //moveToPoint(00, 00, 200);
+    //waitForMovement();
     
-    moveToPoint(30, 30, 200);
-   pause(50);
-    waitForMovementComplete();
-
-  
-    
-    moveToPoint(00, 30, 200);
-   pause(50);
-     waitForMovementComplete();
-
-    
-    moveToPoint(00, 00, 200);
-    waitForMovementComplete();
-    
-    //while (1) {
-    //    copy_objects();
-    //    moveToPoint(objects[2].x, objects[2].y, 200);
-    //    waitForMovementComplete();
-    //}
+    while (1) {
+        copy_objects();
+        float x = ((float) objects[2].x) / VPS_PER_CM;
+        float y = ((float) objects[2].y) / VPS_PER_CM;
+        moveToPoint(x, y, 200);
+        waitForMovement();
+    }
     
     return 0;
 }

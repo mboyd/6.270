@@ -11,7 +11,7 @@
 #define R_ENCODER_PORT 24
 
 // Drivetrain config
-#define ENCODER_TO_WHEEL_RATIO  25
+#define ENCODER_TO_WHEEL_RATIO  4.166
 #define WHEEL_CIRCUMFERENCE     25.6
 #define WHEEL_TRACK             20.8 
 #include <lib/geartrain.h>

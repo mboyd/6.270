@@ -8,30 +8,6 @@
 #include <lib/motion.h>
 #include <math.h>
 
-// Tunable parameters
-#define NAV_ROT_KP              -5
-#define NAV_ROT_KI              0
-#define NAV_ROT_KD              0
-
-#define NAV_DRV_KP              -0
-#define NAV_DRV_KI              0
-#define NAV_DRV_KD              0
-
-#define NAV_FWD_GAIN            20
-
-// "Close-enough" angle and distance
-// POS_EPS is a distance squared
-#define NAV_POS_EPS             3.0
-#define NAV_ANG_EPS             5.0
-
-// Maximum angular error before switching from front drive
-// to in-place pivot (degrees)
-#define NAV_ANG_DRV_LMT         20.0
-
-#define NAV_THREAD_PRIORITY     10
-
-#define VPS_PER_CM              22.3972
-
 // Navigation target
 float target_x;
 float target_y;
@@ -52,10 +28,12 @@ uint8_t nav_thread_id;
 struct lock nav_data_lock;
 struct lock nav_done_lock;
 
-enum nav_state_t {ROTATE, DRIVE};
+enum nav_state_t {ROTATE, DRIVE, DONE};
 enum nav_state_t nav_state; 
 
 uint32_t vps_last_update;
+float last_x = 0;
+float last_y = 0;
 
 struct pid_controller rotate_pid;
 struct pid_controller drive_pid;
@@ -89,10 +67,8 @@ float angle_difference(float a1, float a2) {
 
 void turnToHeading(float t) {
     acquire(&nav_data_lock);
-    target_x = current_x;
-    target_y = current_y;
     
-    target_t = normalize_angle(t);
+    setTarget(current_x, current_y, t, target_v);
     release(&nav_data_lock);
 }
 
@@ -100,16 +76,17 @@ void turnToPoint(float x, float y) {
     acquire(&nav_data_lock);
     
     float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
-    turnToHeading(t);
+    setTarget(current_x, current_y, t, target_v);
+    
     release(&nav_data_lock);
 }
 
 void moveToPoint(float x, float y, float v) {
     acquire(&nav_data_lock);
-    target_x = x;
-    target_y = y;
-    target_t = atan2( y - current_y, x - current_x) * 180 / M_PI;
-    target_v = v;
+    
+    float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
+    setTarget(x, y, t, v);
+    
     release(&nav_data_lock);
 }
 
@@ -119,8 +96,9 @@ void setTarget(float x, float y, float t, float v) {
     target_y = y;
     target_t = normalize_angle(t);
     target_v = v;
-    left_setpoint = v;
-    right_setpoint = v;
+    
+    nav_state = ROTATE;
+    
     release(&nav_data_lock);
 }
 
@@ -135,14 +113,17 @@ void getPosition(float *x, float *y, float *t) {
 }
 
 int isMovementComplete(void) {
-    return !is_held(&nav_done_lock);
+    int done;
+    acquire(&nav_data_lock);
+    done = (nav_state == DONE);
+    release(&nav_data_lock);
+    return done;
 }
 
-void waitForMovementComplete(void) {
-    acquire(&nav_done_lock);
-    release(&nav_done_lock);
-    pause(50);
-    
+void waitForMovement(void) {
+    while (!isMovementComplete()) {
+        yield();
+    }
 }
 
 
@@ -164,10 +145,10 @@ float rotate_pid_input(void) {
 }
 
 void rotate_pid_output(float output) {
-    if (output > 100) {
-        output = 100;
-    } else if (output < -100) {
-        output = -100;
+    if (output > NAV_MAX_ROT) {
+        output = NAV_MAX_ROT;
+    } else if (output < -NAV_MAX_ROT) {
+        output = -NAV_MAX_ROT;
     }
     
     left_setpoint += output;
@@ -176,12 +157,9 @@ void rotate_pid_output(float output) {
 
 float drive_pid_input(void) {
     uint16_t l_enc = encoder_read(L_ENCODER_PORT);
-    
     uint16_t r_enc = encoder_read(R_ENCODER_PORT);
     
     printf("L/R encoders: %u / %u\n", l_enc, r_enc);
-    
-    
     
     return (float) (r_enc - l_enc);
 }
@@ -191,10 +169,32 @@ void drive_pid_output(float output) {
     right_setpoint -= output;
 }
 
+/*
+ * VPS management
+ */
+
 void vps_update(void) {
-    current_x = objects[0].x * VPS_PER_CM;
-    current_y = objects[0].y * VPS_PER_CM;
-    current_t = normalize_angle(objects[0].theta);
+    float x = ((float) objects[0].x) / VPS_PER_CM;
+    float y = ((float) objects[0].y) / VPS_PER_CM;
+    float t = ((float) objects[0].theta) * 360.0 / 4096.0;
+    
+    if (t < 0) {
+        t += 360;
+    }
+    
+    float enc_dist = sqrt(square(current_x - last_x) + square(current_y - last_y));
+    float vps_dist = sqrt(square(x - last_x) + square(y - last_y));
+    
+    printf("Encoder dist: %.2f\t\t VPS dist: %.2f\n", enc_dist, vps_dist);
+    
+    last_x = x;
+    last_y = y;
+    
+    printf("VPS correction dX: %.2f\tdY: %.2f\tdT: %.2f\n", x-current_x, y-current_y, t-current_t);
+        
+    current_x = x;
+    current_y = y;
+    current_t = t;
     
     vps_last_update = position_microtime[0];
 }
@@ -299,11 +299,8 @@ int nav_loop(void) {
                     square(current_y - target_y));
                     
         if (dist <= NAV_POS_EPS) {
-	  printf("releasing lock... current: (%.2f, %.2f) \t target: (%.2f, %.2f) \n", current_x,current_y,target_x,target_y);
             release(&nav_done_lock);
-	    release(&nav_data_lock);
-	    pause(10);
-	    continue;
+            nav_state = DONE;
         }
         
         // Change states if necessary
@@ -335,10 +332,10 @@ int nav_loop(void) {
             printf("Driving, %.2f cm to target\n", dist);
             
             float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
-
     	    left_setpoint = forward_vel;
             right_setpoint = forward_vel;
-	    printf("forward vel is %.2f \t targetv is %.2f \n", forward_vel, target_v);
+	        printf("forward vel is %.2f \t targetv is %.2f \n", forward_vel, target_v);
+	        
             update_pid(&rotate_pid);
     	    //update_pid(&drive_pid);
         }
