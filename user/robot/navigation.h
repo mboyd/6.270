@@ -36,11 +36,15 @@ void turnToPoint(float x, float y);
 
 void moveToPoint(float x, float y, float v);
 
+void pause();
+
+void unpause();
+
 /* Navigation status */
 
 void getPosition(float *x, float *y, float *t);
 
-int isMovementComplete(void);
+int movementComplete(void);
 
 void waitForMovement(void);
 
@@ -52,6 +56,10 @@ int nav_init(void);
 int nav_start(void);
 
 /* Internal */
+
+void vps_update(void);
+
+void gyro_sync(void);
 
 int nav_loop(void);
 

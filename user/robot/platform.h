@@ -28,6 +28,8 @@ static MotorGroup motor_right = 1 << R_MOTOR_PORT;
 
 /* Control functions */
 void setLRMotors(int16_t l_vel, int16_t r_vel);
+void pauseMovement();
+void unpauseMovement();
 
 /* Init */
 void platform_init(void);

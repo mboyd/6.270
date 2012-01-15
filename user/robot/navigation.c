@@ -3,6 +3,7 @@
  */
 #include "navigation.h"
 #include "platform.h"
+#include "util.h"
 
 #include <joyos.h>
 #include <lib/motion.h>
@@ -19,9 +20,13 @@ float current_x;
 float current_y;
 float current_t;
 
-// Drive setpoints
+// Current drive setpoints
 int16_t left_setpoint;
 int16_t right_setpoint;
+
+// Setpoint histories
+rolling_buffer_f l_setpoint_hist;
+rolling_buffer_f r_setpoint_hist;
 
 // Internal nav state
 uint8_t nav_thread_id;
@@ -112,7 +117,7 @@ void getPosition(float *x, float *y, float *t) {
     release(&nav_data_lock);
 }
 
-int isMovementComplete(void) {
+int movementComplete(void) {
     int done;
     acquire(&nav_data_lock);
     done = (nav_state == DONE);
@@ -121,7 +126,7 @@ int isMovementComplete(void) {
 }
 
 void waitForMovement(void) {
-    while (!isMovementComplete()) {
+    while (!movementComplete()) {
         yield();
     }
 }
@@ -132,6 +137,7 @@ void waitForMovement(void) {
  */
 
 float rotate_pid_input(void) {
+    gyro_sync();
     float temp_t = fmod(current_t - target_t, 360);
     if(temp_t > 180)
     {
@@ -159,7 +165,7 @@ float drive_pid_input(void) {
     uint16_t l_enc = encoder_read(L_ENCODER_PORT);
     uint16_t r_enc = encoder_read(R_ENCODER_PORT);
     
-    printf("L/R encoders: %u / %u\n", l_enc, r_enc);
+    //printf("L/R encoders: %u / %u\n", l_enc, r_enc);
     
     return (float) (r_enc - l_enc);
 }
@@ -185,12 +191,12 @@ void vps_update(void) {
     float enc_dist = sqrt(square(current_x - last_x) + square(current_y - last_y));
     float vps_dist = sqrt(square(x - last_x) + square(y - last_y));
     
-    printf("Encoder dist: %.2f\t\t VPS dist: %.2f\n", enc_dist, vps_dist);
+    //printf("Encoder dist: %.2f\t\t VPS dist: %.2f\n", enc_dist, vps_dist);
     
     last_x = x;
     last_y = y;
     
-    printf("VPS correction dX: %.2f\tdY: %.2f\tdT: %.2f\n", x-current_x, y-current_y, t-current_t);
+    //printf("VPS correction dX: %.2f\tdY: %.2f\tdT: %.2f\n", x-current_x, y-current_y, t-current_t);
         
     current_x = x;
     current_y = y;
@@ -209,6 +215,9 @@ int nav_init(void) {
     
     target_x = 0; target_y = 0; target_t = 0;
     
+    rolling_buffer_f_new(&l_setpoint_hist, 3);
+    rolling_buffer_f_new(&r_setpoint_hist, 3);
+    
     init_lock(&nav_data_lock, "nav_data_lock");
     init_lock(&nav_done_lock, "nav_done_lock");
     
@@ -225,7 +234,7 @@ int nav_init(void) {
     nav_state = ROTATE;
     
     vps_last_update = position_microtime[0];
-    printf("Waiting for VPS fix...");
+    //printf("Waiting for VPS fix...");
     uint32_t start_time = get_time_us();
     while (vps_last_update == position_microtime[0]) {  // Wait for VPS update
         copy_objects();  
@@ -237,13 +246,17 @@ int nav_init(void) {
     if (vps_last_update != position_microtime[0]) {
         vps_update();
         gyro_set_degrees(current_t);
-        printf("done.\n");
+        //printf("done.\n");
     } else {
-        printf("timeout.\n");
-    }
-
-    
+        //printf("timeout.\n");
+    } 
     return 0;
+}
+
+void gyro_sync(void) {
+    vps_update();
+    gyro_set_degrees(current_t);
+    //printf("GYRO RESYNC\n");
 }
 
 int nav_start(void) {
@@ -265,18 +278,18 @@ void update_position() {
         target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
     }
     
-    printf("Encoders show movement of %.2f cm\n", enc_dist);
+    //printf("Encoders show movement of %.2f cm\n", enc_dist);
     
     // Check for new VPS fix
     copy_objects();
     if (position_microtime[0] != vps_last_update) {
-        printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
+        //printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
         vps_update();
     }
     
     current_t = normalize_angle(gyro_get_degrees());
     
-    printf("X: %.2f \tY: %.2f \tT: %.2f \t\t\n", current_x, current_y, current_t);
+    //printf("X: %.2f \tY: %.2f \tT: %.2f \t\t\n", current_x, current_y, current_t);
 }
 
 int nav_loop(void) {
@@ -287,7 +300,7 @@ int nav_loop(void) {
             acquire(&nav_done_lock);
         }
         
-        printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
+        //printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
         
         left_setpoint = 0;
         right_setpoint = 0;
@@ -313,11 +326,11 @@ int nav_loop(void) {
         
         } else if (nav_state == DRIVE) {
                         
-            printf("Nav deviation: %.2f\n", angle_difference(current_t, target_t));
+            //printf("Nav deviation: %.2f\n", angle_difference(current_t, target_t));
             
             if (angle_difference(current_t, target_t) >= NAV_ANG_DRV_LMT) {
                 nav_state = ROTATE;
-                printf("Nav angle deviation exceeded\n");
+                //printf("Nav angle deviation exceeded\n");
             }
             
         }
@@ -326,15 +339,15 @@ int nav_loop(void) {
         
         if (nav_state == ROTATE) {
             update_pid(&rotate_pid);
-            printf("Rotating\n");
+            //printf("Rotating\n");
             
         } else if (nav_state == DRIVE) {
-            printf("Driving, %.2f cm to target\n", dist);
+            //printf("Driving, %.2f cm to target\n", dist);
             
             float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
     	    left_setpoint = forward_vel;
             right_setpoint = forward_vel;
-	        printf("forward vel is %.2f \t targetv is %.2f \n", forward_vel, target_v);
+	        //printf("forward vel is %.2f \t targetv is %.2f \n", forward_vel, target_v);
 	        
             update_pid(&rotate_pid);
     	    //update_pid(&drive_pid);
@@ -342,7 +355,13 @@ int nav_loop(void) {
         
         release(&nav_data_lock);
         
-        printf("L/R Setpoints: %i / %i\n", left_setpoint, right_setpoint);
+        rolling_buffer_f_add(&l_setpoint_hist, left_setpoint);
+        rolling_buffer_f_add(&r_setpoint_hist, right_setpoint);
+        
+        float l = rolling_buffer_f_avg(&l_setpoint_hist);
+        float r = rolling_buffer_f_avg(&r_setpoint_hist);
+        
+        //printf("L/R Setpoints: %i / %i\n", l, r);
         
         encoder_reset(L_ENCODER_PORT);
         encoder_reset(R_ENCODER_PORT);

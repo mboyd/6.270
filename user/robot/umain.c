@@ -39,10 +39,28 @@ int umain(void) {
     
     while (1) {
         copy_objects();
-        float x = ((float) objects[2].x) / VPS_PER_CM;
-        float y = ((float) objects[2].y) / VPS_PER_CM;
-        moveToPoint(x, y, 200);
-        waitForMovement();
+        int16_t t_x = objects[2].x;
+        int16_t t_y = objects[2].y;
+        
+        float x = ((float) t_x) / VPS_PER_CM;
+        float y = ((float) t_y) / VPS_PER_CM;
+        
+        uint32_t start_time = get_time_us();
+        
+        moveToPoint(x, y, 150);
+        
+        while (!movementComplete() && (t_x == objects[2].x && t_y == objects[2].y)) {
+            pause(500);
+            if (get_time_us() - start_time > 10000000) {
+                pauseMovement();
+                pause(300);
+                gyro_sync();
+                unpauseMovement();
+            }
+            copy_objects();
+        }        
+        pause(300);
+        gyro_sync();
     }
     
     return 0;

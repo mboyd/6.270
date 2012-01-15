@@ -1,19 +1,10 @@
-// #include "util.h"
-
-#include <stdlib.h>
-#include <stdint.h>
-#include <math.h>
-
-typedef struct rolling_buffer_f {
-    uint16_t i;
-    uint16_t size;
-    float *buf;
-} rolling_buffer_f;
+#include "util.h"
 
 void rolling_buffer_f_new(rolling_buffer_f *b, int16_t size) {
     b->i = 0;
     b->size = size;
     b->buf = malloc(sizeof(float) * size);
+    memset(b->buf, 0, sizeof(float) * size);
 }
 
 void rolling_buffer_f_add(rolling_buffer_f *b, float v) {
