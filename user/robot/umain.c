@@ -47,7 +47,7 @@ int umain(void) {
         
         uint32_t start_time = get_time_us();
         
-        moveToPoint(x, y, 150);
+        moveToPoint(x, y, 200);
         
         while (!movementComplete() && (t_x == objects[2].x && t_y == objects[2].y)) {
             pause(500);

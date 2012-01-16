@@ -2,7 +2,7 @@
 #define __NAVIGATION_H
 
 // Tunable parameters
-#define NAV_ROT_KP              -5
+#define NAV_ROT_KP              -6.5
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.2
 

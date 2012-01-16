@@ -137,7 +137,6 @@ void waitForMovement(void) {
  */
 
 float rotate_pid_input(void) {
-    gyro_sync();
     float temp_t = fmod(current_t - target_t, 360);
     if(temp_t > 180)
     {
