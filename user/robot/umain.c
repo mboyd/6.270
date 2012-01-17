@@ -47,10 +47,21 @@ int umain(void) {
         
         uint32_t start_time = get_time_us();
         
+        //turnToPoint(x, y);
+        
+        //printf("Turning...");
+        //waitForRotation();
+        //printf("done.\n");
+        
+        //pauseMovement();
+        //pause(300);
+        //gyro_sync();
+        //unpauseMovement();
+        
         moveToPoint(x, y, 200);
         
         while (!movementComplete() && (t_x == objects[2].x && t_y == objects[2].y)) {
-            pause(500);
+            pause(50);
             if (get_time_us() - start_time > 10000000) {
                 pauseMovement();
                 pause(300);
@@ -59,8 +70,6 @@ int umain(void) {
             }
             copy_objects();
         }        
-        pause(300);
-        gyro_sync();
     }
     
     return 0;

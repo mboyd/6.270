@@ -21,12 +21,17 @@
 #define LSB_US_PER_DEG      1496152
 
 /* Exported globals */
+int platform_reverse;
+int platform_pause;
 
 // Motor controllers
 static MotorGroup motor_left = 1 << L_MOTOR_PORT;;
 static MotorGroup motor_right = 1 << R_MOTOR_PORT;
 
 /* Control functions */
+void setReversed(int reversed);
+
+float getHeading(void);
 void setLRMotors(int16_t l_vel, int16_t r_vel);
 void pauseMovement();
 void unpauseMovement();

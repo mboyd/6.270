@@ -2,7 +2,7 @@
 #define __NAVIGATION_H
 
 // Tunable parameters
-#define NAV_ROT_KP              -6.5
+#define NAV_ROT_KP              -6
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.2
 
@@ -13,12 +13,12 @@
 #define NAV_FWD_GAIN            40
 
 // Fastest allowed rotation (left/right setpoint delta)
-#define NAV_MAX_ROT             110
+#define NAV_MAX_ROT             150
 
 // "Close-enough" angle and distance
 // POS_EPS is a distance squared
 #define NAV_POS_EPS             2.0
-#define NAV_ANG_EPS             3.0
+#define NAV_ANG_EPS             4.0
 
 // Maximum angular error before switching from front drive
 // to in-place pivot (degrees)
@@ -45,8 +45,10 @@ void unpause();
 void getPosition(float *x, float *y, float *t);
 
 int movementComplete(void);
-
 void waitForMovement(void);
+
+int rotationComplete(void);
+void waitForRotation(void);
 
 
 /* Initialization */

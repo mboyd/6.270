@@ -102,6 +102,10 @@ void setTarget(float x, float y, float t, float v) {
     target_t = normalize_angle(t);
     target_v = v;
     
+    if (angle_difference(target_t, current_t) > 90) {
+        setReversed(!platform_reverse);
+    }
+    
     nav_state = ROTATE;
     
     release(&nav_data_lock);
@@ -115,6 +119,20 @@ void getPosition(float *x, float *y, float *t) {
     *y = current_y;
     *t = current_t;
     release(&nav_data_lock);
+}
+
+int rotationComplete(void) {
+    int done;
+    acquire(&nav_data_lock);
+    done = (nav_state != ROTATE);
+    release(&nav_data_lock);
+    return done;
+}
+
+void waitForRotation(void) {
+    while (!rotationComplete()) {
+        yield();
+    }
 }
 
 int movementComplete(void) {
@@ -286,7 +304,7 @@ void update_position() {
         vps_update();
     }
     
-    current_t = normalize_angle(gyro_get_degrees());
+    current_t = normalize_angle(getHeading());
     
     //printf("X: %.2f \tY: %.2f \tT: %.2f \t\t\n", current_x, current_y, current_t);
 }
@@ -300,7 +318,7 @@ int nav_loop(void) {
         }
         
         //printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
-        
+                
         left_setpoint = 0;
         right_setpoint = 0;
         

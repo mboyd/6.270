@@ -3,9 +3,6 @@
 
 #include "platform.h"
 
-int platform_reverse;
-int platform_pause;
-
 void platform_init(void) {
     platform_reverse = 0;
     platform_pause = 0;
@@ -25,6 +22,18 @@ void pauseMovement() {
 
 void unpauseMovement() {
     platform_pause = 0;
+}
+
+void setReversed(int reversed) {
+    platform_reverse = reversed;
+}
+
+float getHeading(void) {
+    if (platform_reverse) {
+        return gyro_get_degrees() + 180;
+    } else {
+        return gyro_get_degrees();
+    }
 }
 
 void setLRMotors(int16_t l_vel, int16_t r_vel) {
