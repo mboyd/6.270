@@ -337,7 +337,7 @@ int nav_loop(void) {
 
         if (nav_state == ROTATE) {
 
-            if (angle_difference(current_t, target_t) <= NAV_ANG_EPS) {
+            if (angle_difference(current_t, target_t) <= NAV_ANG_DRV_LMT) { // NAV_ANG_EPS
                 nav_state = DRIVE;
             }
         
