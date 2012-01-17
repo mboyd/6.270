@@ -17,25 +17,7 @@ int umain(void) {
     
     nav_start();
     
-    //turnToHeading(0);
-    //waitForMovement();
-    //
-    //float x, y, t;
-    //getPosition(&x, &y, &t);
-    //    
-    //moveToPoint(x+30, y, 200);
-    //waitForMovement();
-    //
-    //return 0;
-    //
-    //moveToPoint(30, 30, 200);
-    //waitForMovement();
-    //
-    //moveToPoint(00, 30, 200);
-    //waitForMovement();
-    //
-    //moveToPoint(00, 00, 200);
-    //waitForMovement();
+    int point = 1;
     
     while (1) {
         copy_objects();
@@ -46,17 +28,6 @@ int umain(void) {
         float y = ((float) t_y) / VPS_PER_CM;
         
         uint32_t start_time = get_time_us();
-        
-        //turnToPoint(x, y);
-        
-        //printf("Turning...");
-        //waitForRotation();
-        //printf("done.\n");
-        
-        //pauseMovement();
-        //pause(300);
-        //gyro_sync();
-        //unpauseMovement();
         
         moveToPoint(x, y, 200);
         
@@ -69,7 +40,14 @@ int umain(void) {
                 unpauseMovement();
             }
             copy_objects();
-        }        
+        }
+        
+        if ((point++) % 30 == 0) {
+            pauseMovement();
+            pause(300);
+            gyro_sync();
+            unpauseMovement();
+        }
     }
     
     return 0;
