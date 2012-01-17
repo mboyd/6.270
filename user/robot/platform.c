@@ -3,9 +3,14 @@
 
 #include "platform.h"
 
+int16_t pastL_vel;
+int16_t pastR_vel;
+
 void platform_init(void) {
     platform_reverse = 0;
     platform_pause = 0;
+    pastL_vel = 0;
+    pastR_vel = 0;
     
     // Calibrate gyro
     printf("Calibrating gyro...");
@@ -52,12 +57,75 @@ void setLRMotors(int16_t l_vel, int16_t r_vel) {
     } else if (r_vel < -255) {
         r_vel = -255;
     }
+
+  if(abs(l_vel) < 30){
+    if(l_vel < 0){
+      l_vel = -30;
+	}
+    else 
+      l_vel = 30;
+	
+}
+
+  if(abs(r_vel) < 30){
+    if(r_vel < 0){
+      r_vel = -30;
+	}
+    else 
+      r_vel = 30;
+	
+}
+
+
     
-    if (platform_reverse) {
+  if (platform_reverse) {
+    if(abs(-r_vel-pastL_vel) > 50){
+      if(pastL_vel < -r_vel){
+	r_vel = -(pastL_vel + 50);
+      }
+      else{
+	r_vel = -(pastL_vel - 50);
+      }
+    }
+    
+    if(abs(-l_vel-pastR_vel) > 50){
+      if(pastR_vel < -l_vel){
+	l_vel = -(pastR_vel + 50);
+      }
+      else{
+	l_vel = -(pastR_vel - 50);
+      }
+    }    
         motor_group_set_vel(motor_left, -r_vel);
         motor_group_set_vel(motor_right, -l_vel);
-    } else {
-        motor_group_set_vel(motor_left, l_vel);
-        motor_group_set_vel(motor_right, r_vel);
+        pastR_vel = -l_vel;
+        pastL_vel = -r_vel;
+  }
+  else {
+    if(abs(l_vel-pastL_vel) > 50){
+      if(pastL_vel < l_vel){
+	l_vel = pastL_vel + 50;
     }
+      else{
+	l_vel = pastL_vel - 50;
+      }
+    }
+    
+    if(abs(r_vel-pastR_vel) > 50){
+      if(pastR_vel < r_vel){
+	r_vel = pastR_vel + 50;
+      }
+      else{
+	r_vel = pastR_vel - 50;
+      }
+    }    
+    motor_group_set_vel(motor_left, l_vel);
+    motor_group_set_vel(motor_right, r_vel);
+    pastR_vel = r_vel;
+    pastL_vel = l_vel;
+  }
+  
+
+
+  
 }
