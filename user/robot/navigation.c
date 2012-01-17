@@ -168,10 +168,18 @@ float rotate_pid_input(void) {
 }
 
 void rotate_pid_output(float output) {
-    if (output > NAV_MAX_ROT) {
-        output = NAV_MAX_ROT;
-    } else if (output < -NAV_MAX_ROT) {
-        output = -NAV_MAX_ROT;
+    if (!platform_reverse) {
+        if (output > NAV_MAX_ROT) {
+            output = NAV_MAX_ROT;
+        } else if (output < -NAV_MAX_ROT) {
+            output = -NAV_MAX_ROT;
+        }
+    } else {
+         if (output > NAV_MAX_RVS_ROT) {
+                output = NAV_MAX_RVS_ROT;
+            } else if (output < -NAV_MAX_RVS_ROT) {
+                output = -NAV_MAX_RVS_ROT;
+            }
     }
     
     left_setpoint += output;

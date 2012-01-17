@@ -79,21 +79,21 @@ void setLRMotors(int16_t l_vel, int16_t r_vel) {
 
     
   if (platform_reverse) {
-    if(abs(-r_vel-pastL_vel) > 50){
+    if(abs(-r_vel-pastL_vel) > SETPOINT_MAX_DERIV){
       if(pastL_vel < -r_vel){
-	r_vel = -(pastL_vel + 50);
+	r_vel = -(pastL_vel + SETPOINT_MAX_DERIV);
       }
       else{
-	r_vel = -(pastL_vel - 50);
+	r_vel = -(pastL_vel - SETPOINT_MAX_DERIV);
       }
     }
     
-    if(abs(-l_vel-pastR_vel) > 50){
+    if(abs(-l_vel-pastR_vel) > SETPOINT_MAX_DERIV){
       if(pastR_vel < -l_vel){
-	l_vel = -(pastR_vel + 50);
+	l_vel = -(pastR_vel + SETPOINT_MAX_DERIV);
       }
       else{
-	l_vel = -(pastR_vel - 50);
+	l_vel = -(pastR_vel - SETPOINT_MAX_DERIV);
       }
     }    
         motor_group_set_vel(motor_left, -r_vel);

@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <lib/motor_group.h>
 
+#define SETPOINT_MAX_DERIV  50
+
 // Motor / encoder config
 #define L_MOTOR_PORT 1
 #define L_ENCODER_PORT 26

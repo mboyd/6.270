@@ -2,7 +2,7 @@
 #define __NAVIGATION_H
 
 // Tunable parameters
-#define NAV_ROT_KP              -6
+#define NAV_ROT_KP              -3.0
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.2
 
@@ -10,10 +10,12 @@
 #define NAV_DRV_KI              0
 #define NAV_DRV_KD              0
 
-#define NAV_FWD_GAIN            40
+#define NAV_FWD_GAIN            3
 
 // Fastest allowed rotation (left/right setpoint delta)
-#define NAV_MAX_ROT             150
+#define NAV_MAX_ROT             120
+// Same thing, but in reverse mode
+#define NAV_MAX_RVS_ROT         70
 
 // "Close-enough" angle and distance
 // POS_EPS is a distance squared

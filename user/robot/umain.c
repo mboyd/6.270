@@ -29,7 +29,7 @@ int umain(void) {
         
         uint32_t start_time = get_time_us();
         
-        moveToPoint(x, y, 200);
+        moveToPoint(x, y, 180);
         
         while (!movementComplete() && (t_x == objects[2].x && t_y == objects[2].y)) {
             pause(50);

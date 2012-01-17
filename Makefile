@@ -1,8 +1,11 @@
 # User source files
-USERSRC = user/robot/platform.c user/robot/navigation.c user/robot/umain.c user/robot/util.c
+USERSRC =   user/robot/platform.c \
+            user/robot/navigation.c \
+            user/robot/util.c \
+            user/robot/umain.c
 
 # Serial port
-AVRDUDE_USERPORT ?= /dev/ttyUSB0
+AVRDUDE_USERPORT ?= /dev/tty.usbserial-AH00WZDT
 
 # Mac Users - you may need to change this to stk500 if you get an error when programming
 PROGRAMMER = stk500v1
