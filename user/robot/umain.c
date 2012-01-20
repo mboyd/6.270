@@ -1,5 +1,6 @@
 #include <joyos.h>
 #include "platform.h"
+#include "cannon.h"
 #include "navigation.h"
 
 extern volatile uint8_t robot_id;
@@ -8,12 +9,27 @@ int usetup(void) {
     robot_id = 7;
     
     platform_init();
+    cannon_init();
     nav_init();
     return 0;
 }
 
 int umain(void) {
     printf("Hello, world!\n");
+    
+    cannon_start();
+    
+    for (int rpm = 700; rpm <= 2500; rpm += 100) {
+        cannon_set_rpm(rpm);
+        go_click();
+    }
+    
+    while (1) {}
+    
+    while (1) {
+        int16_t val = frob_read_range(0, 255);
+        motor_set_vel(0, val);
+    }
     
     nav_start();
     
