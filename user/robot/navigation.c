@@ -33,7 +33,7 @@ uint8_t nav_thread_id;
 struct lock nav_data_lock;
 struct lock nav_done_lock;
 
-enum nav_state_t {ROTATE, DRIVE, DONE};
+enum nav_state_t {ROTATE_ONLY, ROTATE, DRIVE, DONE};
 enum nav_state_t nav_state; 
 
 uint32_t vps_last_update;
@@ -74,6 +74,7 @@ void turnToHeading(float t) {
     acquire(&nav_data_lock);
     
     setTarget(current_x, current_y, t, target_v);
+    nav_state = ROTATE_ONLY;    // Override setTarget to prevent forward drive
     release(&nav_data_lock);
 }
 
@@ -82,7 +83,7 @@ void turnToPoint(float x, float y) {
     
     float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
     setTarget(current_x, current_y, t, target_v);
-    
+    nav_state = ROTATE_ONLY;
     release(&nav_data_lock);
 }
 
@@ -343,10 +344,14 @@ int nav_loop(void) {
         
         // Change states if necessary
 
-        if (nav_state == ROTATE) {
+        if (nav_state == ROTATE || nav_state == ROTATE_ONLY) {
 
             if (angle_difference(current_t, target_t) <= NAV_ANG_DRV_LMT) { // NAV_ANG_EPS
-                nav_state = DRIVE;
+                if (nav_state == ROTATE_ONLY) {
+                    nav_state = DONE;
+                } else {
+                    nav_state = DRIVE;
+                }
             }
         
         } else if (nav_state == DRIVE) {
@@ -362,7 +367,7 @@ int nav_loop(void) {
         
         // Execute
         
-        if (nav_state == ROTATE) {
+        if (nav_state == ROTATE || nav_state == ROTATE_ONLY) {
             update_pid(&rotate_pid);
             //printf("Rotating\n");
             
