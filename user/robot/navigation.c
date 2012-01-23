@@ -205,9 +205,9 @@ void drive_pid_output(float output) {
  */
 
 void vps_update(void) {
-    float x = ((float) objects[0].x) / VPS_PER_CM;
-    float y = ((float) objects[0].y) / VPS_PER_CM;
-    float t = ((float) objects[0].theta) * 360.0 / 4096.0;
+    float x = ((float) game.coords[0].x) / VPS_PER_CM;
+    float y = ((float) game.coords[0].y) / VPS_PER_CM;
+    float t = ((float) game.coords[0].theta) * 360.0 / 4096.0;
     
     if (t < 0) {
         t += 360;
@@ -227,7 +227,7 @@ void vps_update(void) {
     current_y = y;
     current_t = t;
     
-    vps_last_update = position_microtime[0];
+    vps_last_update = position_microtime;
 }
 
 
@@ -258,17 +258,17 @@ int nav_init(void) {
     
     nav_state = ROTATE;
     
-    vps_last_update = position_microtime[0];
+    vps_last_update = position_microtime;
     //printf("Waiting for VPS fix...");
     uint32_t start_time = get_time_us();
-    while (vps_last_update == position_microtime[0]) {  // Wait for VPS update
+    while (vps_last_update == position_microtime) {  // Wait for VPS update
         copy_objects();  
         if (get_time_us() - start_time > 1000000) {     // Timeout after 1 sec
             break;
         }
     }
     
-    if (vps_last_update != position_microtime[0]) {
+    if (vps_last_update != position_microtime) {
         vps_update();
         gyro_set_degrees(current_t);
         //printf("done.\n");
@@ -307,8 +307,8 @@ void update_position() {
     
     // Check for new VPS fix
     copy_objects();
-    if (position_microtime[0] != vps_last_update) {
-        //printf("New VPS fix: dt %u usec.\n", position_microtime[0] - vps_last_update);
+    if (position_microtime != vps_last_update) {
+        //printf("New VPS fix: dt %u usec.\n", position_microtime - vps_last_update);
         vps_update();
     }
     

@@ -2,6 +2,7 @@
 USERSRC =   user/robot/platform.c \
             user/robot/navigation.c \
             user/robot/util.c \
+            user/robot/cannon.c \
             user/robot/umain.c
 
 # Serial port

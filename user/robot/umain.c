@@ -39,8 +39,8 @@ int umain(void) {
     
     while (1) {
         copy_objects();
-        int16_t t_x = objects[2].x;
-        int16_t t_y = objects[2].y;
+        int16_t t_x = game.coords[2].x;
+        int16_t t_y = game.coords[2].y;
         
         float x = ((float) t_x) / VPS_PER_CM;
         float y = ((float) t_y) / VPS_PER_CM;
@@ -49,7 +49,7 @@ int umain(void) {
         
         moveToPoint(x, y, 180);
         
-        while (!movementComplete() && (t_x == objects[2].x && t_y == objects[2].y)) {
+        while (!movementComplete() && (t_x == game.coords[2].x && t_y == game.coords[2].y)) {
             pause(50);
             if (get_time_us() - start_time > 10000000) {
                 pauseMovement();
