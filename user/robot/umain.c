@@ -2,6 +2,7 @@
 #include "platform.h"
 #include "cannon.h"
 #include "navigation.h"
+#include "gameboard.h"
 
 extern volatile uint8_t robot_id;
 
