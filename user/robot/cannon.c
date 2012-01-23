@@ -15,6 +15,12 @@ struct pid_controller cannon_controller;
 int cannon_thread_id;
 struct lock cannon_data_lock;
 
+void cannon_set_distance(float dist) {
+    // Linear fit to calibration curve; see spreadsheet
+    float rpm = 792.515 + 6.88129 * dist;
+    cannon_set_rpm(rpm);
+}
+
 void cannon_set_rpm(float rpm) {
     acquire(&cannon_data_lock);
     cannon_target_rpm = rpm;
@@ -82,6 +88,7 @@ int cannon_loop(void) {
      * Under typical conditions, the cannon behavior is well modeled by
      * (Top wheel RPM) = 2.53 * (Motor setpoint) - 113.76; or
      * (Motor setpoint) = 0.40 * (Top wheel RPM) + 45.03
+     * However, we don't use this, instead driving with a PID controller.
      */
     
     
@@ -99,7 +106,7 @@ int cannon_loop(void) {
         
         release(&cannon_data_lock);
         
-        //pause(50 * (ellapsed / 1000) / ((float) revs));      // Wait for ~50 revs
+        //pause(50 * (ellapsed / 1000) / ((float) revs));      // Wait for ~50 clicks
         pause(300);
     }
     

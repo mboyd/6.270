@@ -18,13 +18,15 @@ int umain(void) {
     printf("Hello, world!\n");
     
     cannon_start();
-    
-    for (int rpm = 700; rpm <= 2500; rpm += 100) {
-        cannon_set_rpm(rpm);
-        go_click();
+
+    while (1) {
+        int16_t dist = frob_read_range(0,255);
+        
+        printf("Distance: %.3i cm\n", dist);
+        
+        cannon_set_distance(dist);
+        pause(300);
     }
-    
-    while (1) {}
     
     while (1) {
         int16_t val = frob_read_range(0, 255);

@@ -9,8 +9,8 @@
 
 #define CANNON_THREAD_PRIORITY      20
 
+void cannon_set_distance(float distance);
 void cannon_set_rpm(float rpm);
-
 float cannon_get_rpm(void);
 
 int cannon_init(void);
