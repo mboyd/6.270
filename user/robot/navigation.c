@@ -187,20 +187,6 @@ void rotate_pid_output(float output) {
     right_setpoint -= output;
 }
 
-float drive_pid_input(void) {
-    uint16_t l_enc = encoder_read(L_ENCODER_PORT);
-    uint16_t r_enc = encoder_read(R_ENCODER_PORT);
-    
-    //printf("L/R encoders: %u / %u\n", l_enc, r_enc);
-    
-    return (float) (r_enc - l_enc);
-}
-
-void drive_pid_output(float output) {
-    left_setpoint += output;
-    right_setpoint -= output;
-}
-
 /*
  * VPS management
  */
@@ -214,11 +200,8 @@ void vps_update(void) {
         t += 360;
     }
     
-    float enc_dist = sqrt(square(current_x - last_x) + square(current_y - last_y));
     float vps_dist = sqrt(square(x - last_x) + square(y - last_y));
-    
-    //printf("Encoder dist: %.2f\t\t VPS dist: %.2f\n", enc_dist, vps_dist);
-    
+        
     last_x = x;
     last_y = y;
     
@@ -251,11 +234,6 @@ int nav_init(void) {
                 rotate_pid_input, rotate_pid_output);
     rotate_pid.goal = 0;
     rotate_pid.enabled = 1;
-    
-    init_pid(&drive_pid, NAV_DRV_KP, NAV_DRV_KI, NAV_DRV_KD,
-                drive_pid_input, drive_pid_output);
-    drive_pid.goal = 0;
-    drive_pid.enabled = 1;
     
     nav_state = ROTATE;
     
@@ -293,19 +271,11 @@ int nav_start(void) {
 }
 
 void update_position() {
-    int16_t l_enc = encoder_read(L_ENCODER_PORT);
-    int16_t r_enc = encoder_read(R_ENCODER_PORT);
-    float enc_dist = (l_enc + r_enc) / (2.0 * TICKS_PER_CM);
-    
-    current_x += enc_dist * cos(current_t * M_PI / 180); // Use old heading
-    current_y += enc_dist * sin(current_t * M_PI / 180);
     
     if (nav_state == DRIVE) {
         target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
     }
-    
-    //printf("Encoders show movement of %.2f cm\n", enc_dist);
-    
+        
     // Check for new VPS fix
     copy_objects();
     if (position_microtime != vps_last_update) {
@@ -337,21 +307,23 @@ int nav_loop(void) {
         float dist = sqrt(square(current_x - target_x) + 
                     square(current_y - target_y));
                     
-        if (dist <= NAV_POS_EPS) {
+        if (nav_state == DRIVE && dist <= NAV_POS_EPS) {
             release(&nav_done_lock);
             nav_state = DONE;
         }
         
         // Change states if necessary
 
-        if (nav_state == ROTATE || nav_state == ROTATE_ONLY) {
+        if (nav_state == ROTATE_ONLY) {
 
-            if (angle_difference(current_t, target_t) <= NAV_ANG_DRV_LMT) { // NAV_ANG_EPS
-                if (nav_state == ROTATE_ONLY) {
-                    nav_state = DONE;
-                } else {
-                    nav_state = DRIVE;
-                }
+            if (angle_difference(current_t, target_t) <= NAV_ANG_EPS) {
+                nav_state = DONE;
+            }
+            
+        } else if (nav_state == ROTATE) {
+            
+            if (angle_difference(current_t, target_t) <= NAV_ANG_DRV_LMT) {         
+                nav_state = DRIVE;
             }
         
         } else if (nav_state == DRIVE) {
@@ -392,9 +364,6 @@ int nav_loop(void) {
         float r = rolling_buffer_f_avg(&r_setpoint_hist);
         
         //printf("L/R Setpoints: %i / %i\n", l, r);
-        
-        encoder_reset(L_ENCODER_PORT);
-        encoder_reset(R_ENCODER_PORT);
 
         setLRMotors(left_setpoint, right_setpoint);
 	

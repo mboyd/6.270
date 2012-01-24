@@ -6,14 +6,14 @@
 
 #define SETPOINT_MAX_DERIV  50
 
-// Motor / encoder config
+// Motor
 #define L_MOTOR_PORT 1
-#define L_ENCODER_PORT 26
 #define R_MOTOR_PORT 0
-#define R_ENCODER_PORT 24
 
-#define CANNON_MOTOR_PORT   0
-#define CANNON_ENCODER_PORT 25
+#define GEAR_MOTOR_PORT     2
+
+#define CANNON_MOTOR_PORT   3
+#define CANNON_ENCODER_PORT 24
 
 // Drivetrain config
 #define ENCODER_TO_WHEEL_RATIO  4.166
@@ -22,15 +22,15 @@
 #include <lib/geartrain.h>
 
 // Gyro config
-#define GYRO_PORT           23
+#define GYRO_PORT           8
 #define LSB_US_PER_DEG      1496152
 
 // Servo config
-#define TRIGGER_SERVO_PORT  0
+#define TRIGGER_SERVO_PORT  2
 #define TRIGGER_LOWER_LIMIT 120
 #define TRIGGER_UPPER_LIMIT 210
 
-#define LEVER_SERVO_PORT    1
+#define LEVER_SERVO_PORT    0
 #define LEVER_LOWER_LIMIT   210
 #define LEVER_UPPER_LIMIT   511
 

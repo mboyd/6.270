@@ -6,10 +6,6 @@
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.2
 
-#define NAV_DRV_KP              -0
-#define NAV_DRV_KI              0
-#define NAV_DRV_KD              0
-
 #define NAV_FWD_GAIN            3
 
 // Fastest allowed rotation (left/right setpoint delta)

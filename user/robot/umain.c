@@ -18,6 +18,7 @@ int usetup(void) {
 int umain(void) {
     printf("Hello, world!\n");
     
+    /*
     cannon_start();
 
     while (1) {
@@ -33,6 +34,7 @@ int umain(void) {
         int16_t val = frob_read_range(0, 255);
         motor_set_vel(0, val);
     }
+    */
     
     nav_start();
     

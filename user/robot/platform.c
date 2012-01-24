@@ -62,23 +62,22 @@ void setLRMotors(int16_t l_vel, int16_t r_vel) {
         r_vel = -255;
     }
 
-  if(abs(l_vel) < 30){
-    if(l_vel < 0){
-      l_vel = -30;
+    /*if(abs(l_vel) < 30){
+        if(l_vel < 0){
+            l_vel = -30;
+	    } else {
+            l_vel = 30;
+        }
 	}
-    else 
-      l_vel = 30;
-	
-}
 
-  if(abs(r_vel) < 30){
-    if(r_vel < 0){
-      r_vel = -30;
-	}
-    else 
-      r_vel = 30;
-	
-}
+    if(abs(r_vel) < 30) {
+        if(r_vel < 0) {
+            r_vel = -30;
+        } else {
+            r_vel = 30;
+        }
+    }*/
+
 
 
     
