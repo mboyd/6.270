@@ -6,7 +6,7 @@
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.2
 
-#define NAV_FWD_GAIN            3
+#define NAV_FWD_GAIN            0.13
 
 // Fastest allowed rotation (left/right setpoint delta)
 #define NAV_MAX_ROT             120
@@ -23,8 +23,6 @@
 #define NAV_ANG_DRV_LMT         20.0
 
 #define NAV_THREAD_PRIORITY     10
-
-#define VPS_PER_CM              22.3972
 
 /* High-level commands */
 

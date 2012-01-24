@@ -45,8 +45,8 @@ int umain(void) {
         int16_t t_x = game.coords[2].x;
         int16_t t_y = game.coords[2].y;
         
-        float x = ((float) t_x) / VPS_PER_CM;
-        float y = ((float) t_y) / VPS_PER_CM;
+        float x = ((float) t_x);
+        float y = ((float) t_y);
         
         uint32_t start_time = get_time_us();
         

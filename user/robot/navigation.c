@@ -192,8 +192,8 @@ void rotate_pid_output(float output) {
  */
 
 void vps_update(void) {
-    float x = ((float) game.coords[0].x) / VPS_PER_CM;
-    float y = ((float) game.coords[0].y) / VPS_PER_CM;
+    float x = ((float) game.coords[0].x);
+    float y = ((float) game.coords[0].y);
     float t = ((float) game.coords[0].theta) * 360.0 / 4096.0;
     
     if (t < 0) {
