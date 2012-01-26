@@ -5,6 +5,7 @@
 #include <lib/motor_group.h>
 
 #define SETPOINT_MAX_DERIV  50
+#define SETPOINT_MIN_VEL    20
 
 // Motor
 #define L_MOTOR_PORT 1
@@ -27,8 +28,8 @@
 
 // Servo config
 #define TRIGGER_SERVO_PORT  2
-#define TRIGGER_LOWER_LIMIT 120
-#define TRIGGER_UPPER_LIMIT 210
+#define TRIGGER_LOWER_LIMIT 233
+#define TRIGGER_UPPER_LIMIT 355
 
 #define LEVER_SERVO_PORT    0
 #define LEVER_LOWER_LIMIT   210

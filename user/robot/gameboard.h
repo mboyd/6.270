@@ -8,7 +8,12 @@ typedef struct point {
     float y;
 } point_t;
 
-// FIXME: sign errors all up in this shit
+static point_t centers[6] = { {1024, 0}, \
+                                   {768, 887}, \
+                                   {-768, 887}, \
+                                   {-1024, 0}, \
+                                   {-768, -887}, \
+                                   {768, -887} };
 
 static point_t outer_vertices[6] = { {2047, 0}, \
                                      {1024, 1773}, \
@@ -36,14 +41,18 @@ typedef struct territory {
 static territory_t territories[6] = { { {1791, 443},   {1791, -443}  }, \
                                       { {512, 1773},   {1280, 1330}  }, \
                                       { {-1280, 1330}, {-512, 1773}  }, \
-                                      { {-1791, 443},  {-1791, 443}  }, \
-                                      { {-512, -1773}, {-1280, 1330} }, \
-                                      { {1280, -1330}, {512, 1773}   }  };
+                                      { {-1791, -443},  {-1791, 443}  }, \
+                                      { {-512, -1773}, {-1280, -1330} }, \
+                                      { {1280, -1330}, {512, -1773}   }  };
 
 float distanceTo(point_t p);
 
 point_t closestGearbox(void);
 point_t closestLever(void);
+
+point_t gearboxOffset(float offset, uint8_t territory);
+point_t leverOffset(float offset, uint8_t territory);
+
 
 
 #endif

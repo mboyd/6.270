@@ -17,7 +17,8 @@ struct lock cannon_data_lock;
 
 void cannon_set_distance(float dist) {
     // Linear fit to calibration curve; see spreadsheet
-    float rpm = 792.515 + 6.88129 * dist;
+    //float rpm = 792.515 + 6.88129 * (dist * 0.06874154263);
+    float rpm = 792.515 + 7.2 * (dist * 0.06874154263); // Guesstimate
     cannon_set_rpm(rpm);
 }
 
@@ -51,16 +52,21 @@ float cannon_pid_input(void) {
 }
 
 void cannon_pid_output(float out) {
+    if (cannon_current_rpm == 0) {
+        out = 255;  // Boost initial spoolup
+    }
+    
+    if (cannon_target_rpm == 0) {
+        out = 0;
+    }
+    
     if (out > 255) {
         out = 255;
     }
     
-    //cannon_motor_setpoint += out;
     cannon_motor_setpoint = out;
-    
-    printf("Cannon at %.2f RPM, motor setpoint %.3i\n", cannon_current_rpm, (int16_t) out);
-    
-    motor_set_vel(CANNON_MOTOR_PORT, (int16_t) cannon_motor_setpoint);   // FIXME: droop
+        
+    motor_set_vel(CANNON_MOTOR_PORT, (int16_t) cannon_motor_setpoint);
 }
 
 int cannon_init(void) {

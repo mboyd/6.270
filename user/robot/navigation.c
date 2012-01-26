@@ -28,13 +28,16 @@ int16_t right_setpoint;
 rolling_buffer_f l_setpoint_hist;
 rolling_buffer_f r_setpoint_hist;
 
+// Nav system options
+int heading_locked;
+
 // Internal nav state
 uint8_t nav_thread_id;
 struct lock nav_data_lock;
 struct lock nav_done_lock;
 
 enum nav_state_t {ROTATE_ONLY, ROTATE, DRIVE, DONE};
-enum nav_state_t nav_state; 
+enum nav_state_t nav_state;
 
 uint32_t vps_last_update;
 float last_x = 0;
@@ -73,7 +76,7 @@ float angle_difference(float a1, float a2) {
 void turnToHeading(float t) {
     acquire(&nav_data_lock);
     
-    setTarget(current_x, current_y, t, target_v);
+    setTargetDirected(current_x, current_y, t, target_v, 0);
     nav_state = ROTATE_ONLY;    // Override setTarget to prevent forward drive
     release(&nav_data_lock);
 }
@@ -82,7 +85,7 @@ void turnToPoint(float x, float y) {
     acquire(&nav_data_lock);
     
     float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
-    setTarget(current_x, current_y, t, target_v);
+    setTargetDirected(current_x, current_y, t, target_v, platform_reverse);
     nav_state = ROTATE_ONLY;
     release(&nav_data_lock);
 }
@@ -92,6 +95,15 @@ void moveToPoint(float x, float y, float v) {
     
     float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
     setTarget(x, y, t, v);
+    
+    release(&nav_data_lock);
+}
+
+void moveToPointDirected(float x, float y, float v, int reverse) {
+    acquire(&nav_data_lock);
+    
+    float t = atan2(y - current_y, x - current_x) * 180 / M_PI;
+    setTargetDirected(x, y, t, v, reverse);
     
     release(&nav_data_lock);
 }
@@ -110,6 +122,24 @@ void setTarget(float x, float y, float t, float v) {
     nav_state = ROTATE;
     
     release(&nav_data_lock);
+}
+
+void setTargetDirected(float x, float y, float t, float v, int reverse) {
+    acquire(&nav_data_lock);
+    target_x = x;
+    target_y = y;
+    target_t = normalize_angle(t);
+    target_v = v;
+    
+    setReversed(reverse);
+    
+    nav_state = ROTATE;
+    
+    release(&nav_data_lock);
+}
+
+void setHeadingLock(int locked) {
+    heading_locked = locked;
 }
 
 /* Navigation status */
@@ -196,6 +226,16 @@ void vps_update(void) {
     float y = ((float) game.coords[0].y);
     float t = ((float) game.coords[0].theta) * 360.0 / 4096.0;
     
+    // VPS angular correction
+    // 443.4units/ft 129in alt
+    float vps_r = sqrt(x*x + y*y);
+    float vps_corr = (443.4) * (vps_r / 4766.55);
+    
+    float vps_t = atan2(y, x);
+    
+    x -= cos(vps_t) * vps_corr;
+    y -= sin(vps_t) * vps_corr;
+    
     if (t < 0) {
         t += 360;
     }
@@ -206,7 +246,7 @@ void vps_update(void) {
     last_y = y;
     
     //printf("VPS correction dX: %.2f\tdY: %.2f\tdT: %.2f\n", x-current_x, y-current_y, t-current_t);
-        
+    
     current_x = x;
     current_y = y;
     current_t = t;
@@ -227,6 +267,8 @@ int nav_init(void) {
     rolling_buffer_f_new(&l_setpoint_hist, 3);
     rolling_buffer_f_new(&r_setpoint_hist, 3);
     
+    heading_locked = 0;
+    
     init_lock(&nav_data_lock, "nav_data_lock");
     init_lock(&nav_done_lock, "nav_done_lock");
     
@@ -238,7 +280,6 @@ int nav_init(void) {
     nav_state = ROTATE;
     
     vps_last_update = position_microtime;
-    //printf("Waiting for VPS fix...");
     uint32_t start_time = get_time_us();
     while (vps_last_update == position_microtime) {  // Wait for VPS update
         copy_objects();  
@@ -250,21 +291,19 @@ int nav_init(void) {
     if (vps_last_update != position_microtime) {
         vps_update();
         gyro_set_degrees(current_t);
-        //printf("done.\n");
-    } else {
-        //printf("timeout.\n");
     } 
     return 0;
 }
 
 void gyro_sync(void) {
+    acquire(&nav_data_lock);
+    copy_objects();
     vps_update();
     gyro_set_degrees(current_t);
-    //printf("GYRO RESYNC\n");
+    release(&nav_data_lock);
 }
 
 int nav_start(void) {
- 
     nav_thread_id = create_thread(nav_loop, 
                 STACK_DEFAULT, NAV_THREAD_PRIORITY, "nav_loop");
     return 0;
@@ -272,7 +311,7 @@ int nav_start(void) {
 
 void update_position() {
     
-    if (nav_state == DRIVE) {
+    if (nav_state == DRIVE && !heading_locked) {
         target_t = atan2((target_y-current_y),(target_x-current_x)) * 180 / M_PI;
     }
         
@@ -286,6 +325,7 @@ void update_position() {
     current_t = normalize_angle(getHeading());
     
     //printf("X: %.2f \tY: %.2f \tT: %.2f \t\t\n", current_x, current_y, current_t);
+    //printf("Heading: %.2f\r", current_t);
 }
 
 int nav_loop(void) {

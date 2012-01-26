@@ -2,20 +2,19 @@
 #define __NAVIGATION_H
 
 // Tunable parameters
-#define NAV_ROT_KP              -3.0
+#define NAV_ROT_KP              -4.5
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.2
 
-#define NAV_FWD_GAIN            0.13
+#define NAV_FWD_GAIN            0.31
 
 // Fastest allowed rotation (left/right setpoint delta)
-#define NAV_MAX_ROT             120
+#define NAV_MAX_ROT             90
 // Same thing, but in reverse mode
-#define NAV_MAX_RVS_ROT         70
+#define NAV_MAX_RVS_ROT         90
 
 // "Close-enough" angle and distance
-// POS_EPS is a distance squared
-#define NAV_POS_EPS             2.0
+#define NAV_POS_EPS             75
 #define NAV_ANG_EPS             4.0
 
 // Maximum angular error before switching from front drive
@@ -32,9 +31,14 @@ void turnToPoint(float x, float y);
 
 void moveToPoint(float x, float y, float v);
 
+void moveToPointDirected(float x, float y, float v, int reverse);
+
 void pause();
 
 void unpause();
+
+/* Options */
+void setHeadingLock(int locked);
 
 /* Navigation status */
 
@@ -62,5 +66,6 @@ void gyro_sync(void);
 int nav_loop(void);
 
 void setTarget(float x, float y, float t, float v);
+void setTargetDirected(float x, float y, float t, float v, int reverse);
 
 #endif
