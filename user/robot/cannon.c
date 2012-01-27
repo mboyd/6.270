@@ -18,7 +18,7 @@ struct lock cannon_data_lock;
 void cannon_set_distance(float dist) {
     // Linear fit to calibration curve; see spreadsheet
     //float rpm = 792.515 + 6.88129 * (dist * 0.06874154263);
-    float rpm = 792.515 + 7.2 * (dist * 0.06874154263); // Guesstimate
+    float rpm = 792.515 + 5.2 * (dist * 0.06874154263);
     cannon_set_rpm(rpm);
 }
 

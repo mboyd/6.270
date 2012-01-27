@@ -28,20 +28,20 @@
 
 // Servo config
 #define TRIGGER_SERVO_PORT  2
-#define TRIGGER_LOWER_LIMIT 233
-#define TRIGGER_UPPER_LIMIT 355
+// Forward
+#define TRIGGER_LOWER_LIMIT 155
+// Back
+#define TRIGGER_UPPER_LIMIT 320
 
 #define LEVER_SERVO_PORT    0
-#define LEVER_LOWER_LIMIT   210
+// Up
+#define LEVER_LOWER_LIMIT   220
+// Down
 #define LEVER_UPPER_LIMIT   511
 
 /* Exported globals */
 int platform_reverse;
 int platform_pause;
-
-// Motor controllers
-static MotorGroup motor_left = 1 << L_MOTOR_PORT;;
-static MotorGroup motor_right = 1 << R_MOTOR_PORT;
 
 /* Drivetrain control functions */
 void setReversed(int reversed);

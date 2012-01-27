@@ -1,7 +1,6 @@
 # User source files
 USERSRC =   user/robot/platform.c \
             user/robot/navigation.c \
-            user/robot/util.c \
             user/robot/cannon.c \
             user/robot/gameboard.c \
             user/robot/umain.c
@@ -60,7 +59,7 @@ OS_PRINTFOP = -Wl,-u,vfprintf -lprintf_flt -lm
 #MEMLAYOUT = -Wl,--defsym=__malloc_heap_end=0x800800
 #OSMEMLAYOUT = -Wl,--defsym=__heap_start=0x808000,--defsym=__heap_end=0x80ffff
 #^^Hopefully makes heap appear in external RAM.
-CFLAGS = -Wall -std=gnu99 -g -Os -mmcu=$(MCU)
+CFLAGS = -Wall -Wno-unused-variable -std=gnu99 -g -Os -mmcu=$(MCU)
 BOOT_LDFLAGS = $(BOOT_PRINTFOP) $(MEMLAYOUT)
 OS_LDFLAGS = $(OS_PRINTFOP) $(OSMEMLAYOUT) 
 

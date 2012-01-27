@@ -13,6 +13,8 @@ void cannon_set_distance(float distance);
 void cannon_set_rpm(float rpm);
 float cannon_get_rpm(void);
 
+void cannon_wait(void);
+
 int cannon_init(void);
 int cannon_start(void);
 int cannon_loop(void);

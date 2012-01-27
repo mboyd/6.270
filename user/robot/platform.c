@@ -97,30 +97,30 @@ void setLRMotors(int16_t l_vel, int16_t r_vel) {
 	      l_vel = -(pastR_vel - SETPOINT_MAX_DERIV);
       }
     }
-    motor_group_set_vel(motor_left, -r_vel);
-    motor_group_set_vel(motor_right, -l_vel);
+    motor_set_vel(L_MOTOR_PORT, -r_vel);
+    motor_set_vel(R_MOTOR_PORT, -l_vel);
     pastR_vel = -l_vel;
     pastL_vel = -r_vel;
   
   } else {
-    if (abs(l_vel-pastL_vel) > 50) {
+    if (abs(l_vel-pastL_vel) > SETPOINT_MAX_DERIV) {
       if (pastL_vel < l_vel) {
-	      l_vel = pastL_vel + 50;
+	      l_vel = pastL_vel + SETPOINT_MAX_DERIV;
       } else {
-	      l_vel = pastL_vel - 50;
+	      l_vel = pastL_vel - SETPOINT_MAX_DERIV;
       }
     }
     
-    if (abs(r_vel-pastR_vel) > 50) {
+    if (abs(r_vel-pastR_vel) > SETPOINT_MAX_DERIV) {
       if (pastR_vel < r_vel) {
-	      r_vel = pastR_vel + 50;
+	      r_vel = pastR_vel + SETPOINT_MAX_DERIV;
       } else {
-	      r_vel = pastR_vel - 50;
+	      r_vel = pastR_vel - SETPOINT_MAX_DERIV;
       }
     }    
     
-    motor_group_set_vel(motor_left, l_vel);
-    motor_group_set_vel(motor_right, r_vel);
+    motor_set_vel(L_MOTOR_PORT, l_vel);
+    motor_set_vel(R_MOTOR_PORT, r_vel);
     pastR_vel = r_vel;
     pastL_vel = l_vel;
   }

@@ -29,7 +29,6 @@ static point_t inner_vertices[6] = { {443, 256}, \
                                      {0, -512}, \
                                      {443, -256} };
 
-// FIXME: check the math here
 static point_t targets[2] = { {-128, 221.5}, \
                               {128, -221.4} };
 

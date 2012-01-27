@@ -3,7 +3,6 @@
  */
 #include "navigation.h"
 #include "platform.h"
-#include "util.h"
 
 #include <joyos.h>
 #include <lib/motion.h>
@@ -24,12 +23,14 @@ float current_t;
 int16_t left_setpoint;
 int16_t right_setpoint;
 
-// Setpoint histories
-rolling_buffer_f l_setpoint_hist;
-rolling_buffer_f r_setpoint_hist;
-
 // Nav system options
-int heading_locked;
+int heading_locked;     // Do not recalculate heading to target point when driving;
+                        // useful for approaches more sensitive to angular error than
+                        // lateral offset.
+
+int fast_drive;         // Do not attempt to come to a full stop at the target point;
+                        // useful when target specifies a waypoint along a smooth path
+                        // and we can drive through it without stopping.
 
 // Internal nav state
 uint8_t nav_thread_id;
@@ -40,8 +41,6 @@ enum nav_state_t {ROTATE_ONLY, ROTATE, DRIVE, DONE};
 enum nav_state_t nav_state;
 
 uint32_t vps_last_update;
-float last_x = 0;
-float last_y = 0;
 
 struct pid_controller rotate_pid;
 struct pid_controller drive_pid;
@@ -138,8 +137,14 @@ void setTargetDirected(float x, float y, float t, float v, int reverse) {
     release(&nav_data_lock);
 }
 
+/* Nav options */
+
 void setHeadingLock(int locked) {
     heading_locked = locked;
+}
+
+void setFastDrive(int fastDrive) {
+    fast_drive = fastDrive;
 }
 
 /* Navigation status */
@@ -213,6 +218,14 @@ void rotate_pid_output(float output) {
             }
     }
     
+    if (abs(output) < NAV_MIN_ROT) {
+        if (output > 0) {
+            output = NAV_MIN_ROT;
+        } else {
+            output = -NAV_MIN_ROT;
+        }
+    }
+    
     left_setpoint += output;
     right_setpoint -= output;
 }
@@ -240,13 +253,6 @@ void vps_update(void) {
         t += 360;
     }
     
-    float vps_dist = sqrt(square(x - last_x) + square(y - last_y));
-        
-    last_x = x;
-    last_y = y;
-    
-    //printf("VPS correction dX: %.2f\tdY: %.2f\tdT: %.2f\n", x-current_x, y-current_y, t-current_t);
-    
     current_x = x;
     current_y = y;
     current_t = t;
@@ -264,10 +270,8 @@ int nav_init(void) {
     
     target_x = 0; target_y = 0; target_t = 0;
     
-    rolling_buffer_f_new(&l_setpoint_hist, 3);
-    rolling_buffer_f_new(&r_setpoint_hist, 3);
-    
     heading_locked = 0;
+    fast_drive = 0;
     
     init_lock(&nav_data_lock, "nav_data_lock");
     init_lock(&nav_done_lock, "nav_done_lock");
@@ -318,14 +322,10 @@ void update_position() {
     // Check for new VPS fix
     copy_objects();
     if (position_microtime != vps_last_update) {
-        //printf("New VPS fix: dt %u usec.\n", position_microtime - vps_last_update);
         vps_update();
     }
     
     current_t = normalize_angle(getHeading());
-    
-    //printf("X: %.2f \tY: %.2f \tT: %.2f \t\t\n", current_x, current_y, current_t);
-    //printf("Heading: %.2f\r", current_t);
 }
 
 int nav_loop(void) {
@@ -335,9 +335,7 @@ int nav_loop(void) {
         if (!is_held(&nav_done_lock)) {
             acquire(&nav_done_lock);
         }
-        
-        //printf("Target x: %.2f\tTarget y: %.2f\tTarget t: %.2f\n", target_x, target_y, target_t);
-                
+                        
         left_setpoint = 0;
         right_setpoint = 0;
         
@@ -367,12 +365,9 @@ int nav_loop(void) {
             }
         
         } else if (nav_state == DRIVE) {
-                        
-            //printf("Nav deviation: %.2f\n", angle_difference(current_t, target_t));
-            
+                                    
             if (angle_difference(current_t, target_t) >= NAV_ANG_DRV_LMT) {
                 nav_state = ROTATE;
-                //printf("Nav angle deviation exceeded\n");
             }
             
         }
@@ -381,30 +376,24 @@ int nav_loop(void) {
         
         if (nav_state == ROTATE || nav_state == ROTATE_ONLY) {
             update_pid(&rotate_pid);
-            //printf("Rotating\n");
             
         } else if (nav_state == DRIVE) {
-            //printf("Driving, %.2f cm to target\n", dist);
             
-            float forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
+            float forward_vel;
+            if (!fast_drive) {
+                forward_vel = fmin(target_v, dist * NAV_FWD_GAIN);
+            } else {
+                forward_vel = target_v;
+            }
+    	    
     	    left_setpoint = forward_vel;
             right_setpoint = forward_vel;
-	        //printf("forward vel is %.2f \t targetv is %.2f \n", forward_vel, target_v);
 	        
             update_pid(&rotate_pid);
-    	    //update_pid(&drive_pid);
         }
         
         release(&nav_data_lock);
         
-        rolling_buffer_f_add(&l_setpoint_hist, left_setpoint);
-        rolling_buffer_f_add(&r_setpoint_hist, right_setpoint);
-        
-        float l = rolling_buffer_f_avg(&l_setpoint_hist);
-        float r = rolling_buffer_f_avg(&r_setpoint_hist);
-        
-        //printf("L/R Setpoints: %i / %i\n", l, r);
-
         setLRMotors(left_setpoint, right_setpoint);
 	
     }
