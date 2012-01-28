@@ -18,7 +18,7 @@ struct lock cannon_data_lock;
 void cannon_set_distance(float dist) {
     // Linear fit to calibration curve; see spreadsheet
     //float rpm = 792.515 + 6.88129 * (dist * 0.06874154263);
-    float rpm = 792.515 + 5.2 * (dist * 0.06874154263);
+    float rpm = 792.515 + 4.75 * (dist * 0.06874154263);
     cannon_set_rpm(rpm);
 }
 
@@ -36,6 +36,14 @@ float cannon_get_rpm(void) {
     return rpm;
 }
 
+int cannon_ready(void) {
+    int ready;
+    acquire(&cannon_data_lock);
+    ready = (fabs(cannon_current_rpm - cannon_target_rpm) < CANNON_RPM_EPS);
+    release(&cannon_data_lock);
+    return ready;
+}
+
 void cannon_wait(void) {
     int done = 0;
     while (!done) {
@@ -44,6 +52,11 @@ void cannon_wait(void) {
         release(&cannon_data_lock);
         pause(50);
     }
+}
+
+void cannon_fire_wait(void) {
+    acquire(&cannon_empty);
+    release(&cannon_empty);
 }
 
 float cannon_pid_input(void) {
@@ -73,6 +86,9 @@ int cannon_init(void) {
     cannon_target_rpm = 0;
     cannon_motor_setpoint = 0;
     
+    init_lock(&cannon_data_lock, "cannon_data_lock");
+    init_lock(&cannon_empty, "cannon_empty");
+    
     init_pid(&cannon_controller, CANNON_RPM_KP, CANNON_RPM_KI, CANNON_RPM_KD,
                 cannon_pid_input, cannon_pid_output);
     cannon_controller.goal = 0;
@@ -86,6 +102,9 @@ int cannon_start(void) {
     
     cannon_thread_id = create_thread(cannon_loop, 
                 STACK_DEFAULT, CANNON_THREAD_PRIORITY, "cannon_loop");
+    
+    create_thread(cannon_trigger_loop, 
+                STACK_DEFAULT, CANNON_THREAD_PRIORITY, "cannon_trigger_loop");
     return 0;
 }
 
@@ -117,4 +136,26 @@ int cannon_loop(void) {
     }
     
     return 0;
+}
+
+int cannon_trigger_loop(void) {
+   while (1) {
+       if (analog_read(CANNON_BREAKBEAM_PORT) < 500) { // No ball
+           if (is_held(&cannon_empty)) {
+               release(&cannon_empty);
+           }
+           pause(300);
+       } else {
+           if (!is_held(&cannon_empty)) {
+               acquire(&cannon_empty);
+           }
+           cannon_wait();       // Ensure cannon at rpm setpoint
+           pause(200);          // Wait for ball to settle
+           triggerForward();
+           pause(300);
+           triggerBack();
+           pause(300);
+       }
+   }
+   return 0;
 }

@@ -10,7 +10,7 @@ enum team_t team;
 
 int usetup(void) {
     robot_id = 7;
-    
+        
     platform_init();
     cannon_init();
     nav_init();
@@ -28,8 +28,10 @@ int usetup(void) {
 }
 
 void capture_territory(uint8_t territory) {
-    point_t p1 = gearboxOffset(550, territory);
-    point_t p2 = gearboxOffset(430, territory);
+    point_t p1 = gearboxOffset(480, territory);
+    point_t p2 = gearboxOffset(365, territory);
+    
+    uint8_t failure_count = 0;
     
     moveToPoint(p1.x, p1.y, 150);
     waitForMovement();
@@ -52,7 +54,7 @@ void capture_territory(uint8_t territory) {
     uint32_t start_time = get_time_us();
     
     while (game.territories[territory].owner != robot_id && \
-        (get_time_us() - start_time) < 3500000) {
+        (get_time_us() - start_time) < 1500000) {
             
             copy_objects();
             
@@ -64,10 +66,15 @@ void capture_territory(uint8_t territory) {
     pauseMovement();    // Cut out the nav controller
     motor_set_vel(L_MOTOR_PORT, -110);  // And back straight out for a bit
     motor_set_vel(R_MOTOR_PORT, -110);
-    pause(500);
+    pause(350);
     unpauseMovement();
     
     if (game.territories[territory].owner != robot_id) {
+        // Failed to capture
+        /*if ((++failure_count) == 3) {
+            // Failed 3 times, bail
+            return;
+        }*/
         
         moveToPoint(p1.x, p1.y, 110);
         waitForMovement();
@@ -81,15 +88,20 @@ void capture_territory(uint8_t territory) {
 }
 
 void mine_territory(uint8_t territory) {
-    point_t p1 = leverOffset(550, territory);
-    point_t p2 = leverOffset(250, territory);
+    uint8_t failure_count = 0;
     
-    moveToPoint(p1.x, p1.y, 110);
+    point_t p1 = leverTargetOffset(550, territory); // Staging point
+    point_t p2 = leverTargetOffset(255, territory); // Target point
+    
+    point_t p1_fallback = leverOffset(550, territory);
+    point_t p2_fallback = leverOffset(255, territory);
+    
+    moveToPoint(p1.x, p1.y, 150);                   // Move to staging point
     waitForMovement();
     
-    //engageLever:
+    engageLever:
     
-    setReversed(1);
+    setReversed(1);                                 // Turn to the lever
     turnToPoint(p2.x, p2.y);
     waitForMovement();
     
@@ -99,47 +111,62 @@ void mine_territory(uint8_t territory) {
     moveToPointDirected(p2.x, p2.y, 110, 1);
     waitForMovement();
     
+    setReversed(0);
+    turnToPoint(targets[0].x, targets[0].y);        // Turn to the target
+    waitForMovement();
+    
     pauseMovement();
     
-    uint32_t start_time = get_time_us();
+    cannon_set_distance(distanceTo(targets[0]));    // Set for the final position
     
-    uint8_t ball_count = game.territories[territory].remaining;
+    uint8_t initial_count = game.territories[territory].remaining;
+    uint8_t balls_retrieved = 0;
     
-    for (int i = 0; i < 3; i++) {
-        leverDown();
-        pause(500);
+    //while (game.territories[territory].remaining && !game.territories[territory].rate_limit) {
+    for (int i = 0; i < 5; i++) {
+        leverDown();        // Pull the lever
+        pause(400);
         leverUp();
-        pause(500); // Wait for ball to drop
+        pause(400);         // Wait for ball to drop
+        balls_retrieved++;
+        
+        if (game.territories[territory].remaining != (initial_count - balls_retrieved)) {
+            // We're missing the lever, back out and retry with the fallback points
+            failure_count++;
+            
+            if (failure_count == 2) {
+                // We've already failed once, bail
+                goto cleanup;
+            }
+            
+            p1 = p1_fallback;
+            p2 = p2_fallback;
+            
+            cannon_fire_wait();
+            
+            unpauseMovement();
+            setHeadingLock(0);
+            moveToPointDirected(p1.x, p1.y, 110, 0);
+            waitForMovement();
+            
+            goto engageLever;
+        }
     }
     
-    copy_objects();
+    cannon_fire_wait();
     
-    uint8_t obtained = ball_count - game.territories[territory].remaining;
+    copy_objects();
+    gyro_sync();
+    
+    uint8_t obtained = initial_count - game.territories[territory].remaining;
+    
+    cleanup:
     
     unpauseMovement();
 
     setHeadingLock(0);
     moveToPointDirected(p1.x, p1.y, 110, 0);
     waitForMovement();
-    
-    
-    while ((obtained--) > 0) {
-        turnToPoint(targets[0].x, targets[0].y);
-        cannon_set_distance(distanceTo(targets[0]));
-        
-        waitForMovement();
-        
-        copy_objects();
-        
-        cannon_set_distance(distanceTo(targets[0]));
-        
-        cannon_wait();
-        
-        triggerForward();
-        pause(300);
-        triggerBack();
-        pause(300);
-    }
     
 }
 
@@ -173,7 +200,7 @@ int umain(void) {
     
     nav_start();
     cannon_start();
-        
+
     for (int i = 1; i < 5; i++) {
         moveToPoint(centers[i].x, centers[i].y, 200);
         waitForMovement();
@@ -182,7 +209,6 @@ int umain(void) {
     for (int i = 5; i >= 0; i--) {
 
         capture_territory(i);
-        
         mine_territory(i);
     }
     

@@ -51,7 +51,7 @@ point_t closestLever(void);
 
 point_t gearboxOffset(float offset, uint8_t territory);
 point_t leverOffset(float offset, uint8_t territory);
-
+point_t leverTargetOffset(float offset, uint8_t territory);
 
 
 #endif

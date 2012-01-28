@@ -29,15 +29,17 @@
 // Servo config
 #define TRIGGER_SERVO_PORT  2
 // Forward
-#define TRIGGER_LOWER_LIMIT 155
+#define TRIGGER_LOWER_LIMIT 180
 // Back
-#define TRIGGER_UPPER_LIMIT 320
+#define TRIGGER_UPPER_LIMIT 331
 
 #define LEVER_SERVO_PORT    0
 // Up
 #define LEVER_LOWER_LIMIT   220
 // Down
 #define LEVER_UPPER_LIMIT   511
+
+#define CANNON_BREAKBEAM_PORT   12
 
 /* Exported globals */
 int platform_reverse;

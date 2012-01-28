@@ -65,3 +65,21 @@ point_t leverOffset(float offset, uint8_t territory) {
     
     return lever;
 }
+
+point_t leverTargetOffset(float offset, uint8_t territory) {
+    point_t v1 = territories[territory].lever;
+    point_t v2 = targets[0];
+    
+    point_t v;
+    v.x = v2.x - v1.x;
+    v.y = v2.y - v1.y;
+    
+    float mag = sqrt(v.x*v.x + v.y*v.y);
+    point_t lever = territories[territory].lever;
+    lever.x += offset * v.x / mag;
+    lever.y += offset * v.y / mag;
+    
+    return lever;
+}
+
+
