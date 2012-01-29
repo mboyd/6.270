@@ -1,7 +1,9 @@
 #include "cannon.h"
 #include "platform.h"
+#include "gameboard.h"
 #include <joyos.h>
 #include <lib/pid.h>
+#include <math.h>
 
 float cannon_current_rpm;
 float cannon_target_rpm;
@@ -139,13 +141,17 @@ int cannon_loop(void) {
 }
 
 int cannon_trigger_loop(void) {
-   while (1) {
-       if (analog_read(CANNON_BREAKBEAM_PORT) < 500) { // No ball
-           if (is_held(&cannon_empty)) {
+    int empty_count = 0;
+    while (1) {
+        cannon_set_distance(distanceTo(targets[0]));    // Update cannon setpoint
+        
+       if (analog_read(CANNON_BREAKBEAM_PORT) < 150) { // No ball
+           if (is_held(&cannon_empty) && (++empty_count) == 3) {
                release(&cannon_empty);
            }
            pause(300);
        } else {
+           empty_count = 0;
            if (!is_held(&cannon_empty)) {
                acquire(&cannon_empty);
            }

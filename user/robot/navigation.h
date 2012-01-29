@@ -2,21 +2,21 @@
 #define __NAVIGATION_H
 
 // Tunable parameters
-#define NAV_ROT_KP              -6.5
+#define NAV_ROT_KP              -7
 #define NAV_ROT_KI              0
-#define NAV_ROT_KD              0.08
+#define NAV_ROT_KD              0.10
 
-#define NAV_FWD_GAIN            0.31
+#define NAV_FWD_GAIN            0.35
 
 // Fastest / slowest allowed rotation (left/right setpoint delta)
 #define NAV_MAX_ROT             90
-#define NAV_MIN_ROT             0
+#define NAV_MIN_ROT             25
 // Same thing, but in reverse mode
 #define NAV_MAX_RVS_ROT         75
 
 // "Close-enough" angle and distance
-// VPS units -> ~2 inches
-#define NAV_POS_EPS             75
+// VPS units
+#define NAV_POS_EPS             70
 // degrees
 #define NAV_ANG_EPS             4.0
 

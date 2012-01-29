@@ -9,11 +9,11 @@ typedef struct point {
 } point_t;
 
 static point_t centers[6] = { {1024, 0}, \
-                                   {768, 887}, \
-                                   {-768, 887}, \
-                                   {-1024, 0}, \
-                                   {-768, -887}, \
-                                   {768, -887} };
+                              {768, 887}, \
+                              {-768, 887}, \
+                              {-1024, 0}, \
+                              {-768, -887}, \
+                              {768, -887} };
 
 static point_t outer_vertices[6] = { {2047, 0}, \
                                      {1024, 1773}, \
@@ -49,7 +49,7 @@ float distanceTo(point_t p);
 point_t closestGearbox(void);
 point_t closestLever(void);
 
-point_t gearboxOffset(float offset, uint8_t territory);
+point_t gearboxOffset(float nOffset, float pOffset, uint8_t territory);
 point_t leverOffset(float offset, uint8_t territory);
 point_t leverTargetOffset(float offset, uint8_t territory);
 

@@ -4,10 +4,10 @@
 #include <stdint.h>
 #include <lib/motor_group.h>
 
-#define SETPOINT_MAX_DERIV  50
-#define SETPOINT_MIN_VEL    20
+#define SETPOINT_MAX_DERIV  28
+#define SETPOINT_MIN_VEL    28
 
-// Motor
+// Motor config
 #define L_MOTOR_PORT 1
 #define R_MOTOR_PORT 0
 
@@ -16,12 +16,6 @@
 #define CANNON_MOTOR_PORT   3
 #define CANNON_ENCODER_PORT 24
 
-// Drivetrain config
-#define ENCODER_TO_WHEEL_RATIO  4.166
-#define WHEEL_CIRCUMFERENCE     25.6
-#define WHEEL_TRACK             20.8 
-#include <lib/geartrain.h>
-
 // Gyro config
 #define GYRO_PORT           8
 #define LSB_US_PER_DEG      1496152
@@ -29,9 +23,9 @@
 // Servo config
 #define TRIGGER_SERVO_PORT  2
 // Forward
-#define TRIGGER_LOWER_LIMIT 180
+#define TRIGGER_LOWER_LIMIT 203
 // Back
-#define TRIGGER_UPPER_LIMIT 331
+#define TRIGGER_UPPER_LIMIT 337
 
 #define LEVER_SERVO_PORT    0
 // Up

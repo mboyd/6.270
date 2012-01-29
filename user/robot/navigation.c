@@ -114,6 +114,8 @@ void setTarget(float x, float y, float t, float v) {
     target_t = normalize_angle(t);
     target_v = v;
     
+    float dist = sqrt(square(current_x - target_x) + square(current_y - target_y));
+    
     if (angle_difference(target_t, current_t) > 90) {
         setReversed(!platform_reverse);
     }
@@ -242,13 +244,13 @@ void vps_update(void) {
     // VPS angular correction
     // 443.4units/ft 129in alt
     float vps_r = sqrt(x*x + y*y);
-    float vps_corr = (443.4) * (vps_r / 4766.55);
+    float vps_corr = 1 -(443.4 / 4766.55);
     
     float vps_t = atan2(y, x);
     
-    x -= cos(vps_t) * vps_corr;
-    y -= sin(vps_t) * vps_corr;
-    
+    x *= vps_corr;
+    y *= vps_corr;
+        
     if (t < 0) {
         t += 360;
     }

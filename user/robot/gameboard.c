@@ -32,7 +32,7 @@ point_t closestLever(void) {
     return territories[min].lever;
 }
 
-point_t gearboxOffset(float offset, uint8_t territory) {
+point_t gearboxOffset(float nOffset, float pOffset, uint8_t territory) {
     point_t v1 = outer_vertices[territory];
     point_t v2 = outer_vertices[(territory+1)%6];
     
@@ -40,11 +40,18 @@ point_t gearboxOffset(float offset, uint8_t territory) {
     normal.x = v1.y - v2.y;
     normal.y = v2.x - v1.x;
     
+    point_t edge;
+    edge.x = v2.x - v1.x;
+    edge.y = v2.y - v1.y;
+    
     float mag = sqrt(normal.x*normal.x + normal.y*normal.y);
     
     point_t gearbox = territories[territory].gearbox;
-    gearbox.x += offset * normal.x / mag;
-    gearbox.y += offset * normal.y / mag;
+    gearbox.x += nOffset * normal.x / mag;
+    gearbox.y += nOffset * normal.y / mag;
+    
+    gearbox.x += pOffset * edge.x / mag;
+    gearbox.y += pOffset * edge.y / mag;
     
     return gearbox;
 }
