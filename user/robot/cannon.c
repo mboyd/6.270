@@ -1,6 +1,7 @@
 #include "cannon.h"
 #include "platform.h"
 #include "gameboard.h"
+#include "navigation.h"
 #include <joyos.h>
 #include <lib/pid.h>
 #include <math.h>
@@ -9,6 +10,8 @@ float cannon_current_rpm;
 float cannon_target_rpm;
 
 float cannon_motor_setpoint;
+
+int target_ready;
 
 uint32_t last_update;
 
@@ -61,6 +64,10 @@ void cannon_fire_wait(void) {
     release(&cannon_empty);
 }
 
+void setTargetReady(int targetReady) {
+    target_ready = targetReady;
+}
+
 float cannon_pid_input(void) {
     float err = cannon_target_rpm - cannon_current_rpm;
     return err;
@@ -87,6 +94,8 @@ void cannon_pid_output(float out) {
 int cannon_init(void) {
     cannon_target_rpm = 0;
     cannon_motor_setpoint = 0;
+    
+    target_ready = 0;
     
     init_lock(&cannon_data_lock, "cannon_data_lock");
     init_lock(&cannon_empty, "cannon_empty");
@@ -145,23 +154,51 @@ int cannon_trigger_loop(void) {
     while (1) {
         cannon_set_distance(distanceTo(targets[0]));    // Update cannon setpoint
         
-       if (analog_read(CANNON_BREAKBEAM_PORT) < 150) { // No ball
-           if (is_held(&cannon_empty) && (++empty_count) == 3) {
-               release(&cannon_empty);
-           }
-           pause(300);
-       } else {
-           empty_count = 0;
-           if (!is_held(&cannon_empty)) {
-               acquire(&cannon_empty);
-           }
-           cannon_wait();       // Ensure cannon at rpm setpoint
-           pause(200);          // Wait for ball to settle
-           triggerForward();
-           pause(300);
-           triggerBack();
-           pause(300);
+        if (analog_read(CANNON_BREAKBEAM_PORT) < 200) { // No ball
+            if (is_held(&cannon_empty) && (++empty_count) == 4) {
+                release(&cannon_empty);
+            }
+        } else {
+            empty_count = 0;
+            if (!is_held(&cannon_empty)) {
+                acquire(&cannon_empty);
+            }
+            
+            struct nav_system_state_t old_state;
+            int old_reverse = 0;
+            
+            if (!target_ready) {
+                
+                if (platform_pause) {   // Platform is paused for some reason
+                    continue;           // Don't fire yet, we're probably syncing the gyro
+                }
+                
+                // Position the cannon, interrupting any current movement
+                old_state = getNavSystemState();
+                old_reverse = platform_reverse;
+                           
+                setReversed(0);
+            
+                turnToPoint(targets[0].x, targets[0].y);
+                waitForMovement();
+            }
+            
+            cannon_wait();       // Ensure cannon at rpm setpoint
+            pause(200);          // Wait for ball to settle
+            triggerForward();
+            pause(300);
+            triggerBack();
+            
+            if (!target_ready) {
+                // Resume prior movement
+                platform_reverse = old_reverse;
+                setNavSystemState(old_state);
+            }
+           
        }
+       
+       pause(300);
+       
    }
    return 0;
 }

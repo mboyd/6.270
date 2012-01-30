@@ -8,8 +8,12 @@ extern volatile uint8_t robot_id;
 enum team_t {RED, BLUE} team_t;
 enum team_t team;
 
+uint8_t recovery_enabled;
+
 int usetup(void) {
     robot_id = 7;
+    
+    recovery_enabled = 1;
         
     platform_init();
     cannon_init();
@@ -17,10 +21,12 @@ int usetup(void) {
     
     if (game.coords[0].x < 0) {
         team = RED;
+        
         point_t temp = targets[0];
         targets[0] = targets[1];
         targets[1] = temp;
-    } else {
+        
+    } else {        
         team = BLUE;
     }
     
@@ -36,7 +42,6 @@ void capture_territory(uint8_t territory) {
     moveToPoint(p1.x, p1.y, 150);
     waitForMovement();
     
-    
     engageGear:
     
     setReversed(0);
@@ -44,6 +49,7 @@ void capture_territory(uint8_t territory) {
     waitForMovement();
     
     setHeadingLock(1);  // Lock in the initial heading to target
+    setRecoveryEnabled(0);
     moveToPointDirected(p2.x, p2.y, 110, 0);
 
     if (team == RED) {
@@ -62,6 +68,7 @@ void capture_territory(uint8_t territory) {
     }
     
     motor_set_vel(GEAR_MOTOR_PORT, 0);
+    setRecoveryEnabled(1);
     setHeadingLock(0);
     
     pauseMovement();    // Cut out the nav controller
@@ -72,10 +79,10 @@ void capture_territory(uint8_t territory) {
     
     if (game.territories[territory].owner != robot_id) {
         // Failed to capture
-        /*if ((++failure_count) == 3) {
+        if ((++failure_count) == 3) {
             // Failed 3 times, bail
             return;
-        }*/
+        }
         
         moveToPoint(p1.x, p1.y, 110);
         waitForMovement();
@@ -91,11 +98,11 @@ void capture_territory(uint8_t territory) {
 void mine_territory(uint8_t territory) {
     uint8_t failure_count = 0;
     
-    point_t p1 = leverTargetOffset(550, territory); // Staging point
-    point_t p2 = leverTargetOffset(260, territory); // Target point
+    point_t p1 = leverTargetOffset(550, 0, territory); // Staging point
+    point_t p2 = leverTargetOffset(255, 0, territory); // Target point
     
-    point_t p1_fallback = leverOffset(550, territory);
-    point_t p2_fallback = leverOffset(260, territory);
+    point_t p1_fallback = leverOffset(550, -30, territory);
+    point_t p2_fallback = leverOffset(242, -30, territory);
     
     moveToPoint(p1.x, p1.y, 150);                   // Move to staging point
     waitForMovement();
@@ -114,20 +121,35 @@ void mine_territory(uint8_t territory) {
     turnToPoint(targets[0].x, targets[0].y);        // Turn to the target
     waitForMovement();
     
+    setTargetReady(1);
+    setRecoveryEnabled(0);
     pauseMovement();
+    
+    copy_objects();
+    
+    pause(game.territories[territory].rate_limit * 1000);
         
     uint8_t initial_count = game.territories[territory].remaining;
     uint8_t balls_retrieved = 0;
     
+    copy_objects();
+    
     while (game.territories[territory].remaining) {
-    //for (int i = 0; i < 5; i++) {
         leverDown();        // Pull the lever
         pause(400);
         leverUp();
         pause(600);         // Wait for ball to drop
         balls_retrieved++;
         
+        copy_objects();
+        
         if (game.territories[territory].remaining != (initial_count - balls_retrieved)) {
+            
+            if (game.territories[territory].owner != robot_id) {
+                // This territory has been captured out from under us, bail
+                goto cleanup;
+            }
+            
             // We're missing the lever, back out and retry with the fallback points
             failure_count++;
             
@@ -154,7 +176,6 @@ void mine_territory(uint8_t territory) {
         }
     }
     
-    pause(400);
     
     cannon_fire_wait();
     
@@ -165,6 +186,8 @@ void mine_territory(uint8_t territory) {
     
     cleanup:
     
+    setTargetReady(0);
+    setRecoveryEnabled(1);
     unpauseMovement();
 
     setHeadingLock(0);
@@ -203,16 +226,93 @@ int umain(void) {
     
     nav_start();
     cannon_start();
-
-    for (int i = 1; i < 5; i++) {
-        moveToPoint(centers[i].x, centers[i].y, 200);
-        waitForMovement();
+    
+    uint8_t current_territory;
+    
+    if (team == BLUE) {
+        current_territory = 0;
+    } else {
+        current_territory = 3;
     }
         
-    for (int i = 5; i >= 0; i--) {
-        capture_territory(i);
-        mine_territory(i);
+    for (int i = 0; i < 5; i++) {
+        current_territory = (current_territory + 1) % 6;
+        moveToPoint(centers[current_territory].x, centers[current_territory].y, 200);
+        waitForMovement();
     }
+            
+    capture_territory(current_territory);
+    mine_territory(current_territory);
+    
+    
+    while (1) {
+        copy_objects();
+        // In general, we prefer moving clockwise,
+        // as that's the orientation of the gearbox -> lever path
+        
+        uint8_t a2 = (current_territory + 1) % 6;
+        uint8_t a1 = (current_territory + 5) % 6;
+        
+        uint8_t op = opponentPosition();
+        
+        uint8_t dest = a1;      // Set default, just in case
+        
+        territory_data t1 = game.territories[a1];
+        territory_data t2 = game.territories[a2];
+        
+        // Avoid the opponent above all else
+        // (don't want to get stuck or broken)
+        if (op == a1) {
+            dest = a2;
+        
+        } else if (op == a2) {
+            dest = a1;
+        
+        // If we can make an easy buck...
+        } else if (t1.owner == robot_id && 
+                (t1.remaining > 2 || t1.rate_limit < 2)) {
+        
+            dest = a1;
+        
+        
+        } else if (t2.owner == robot_id && 
+                (t2.remaining > 2 || t2.rate_limit < 2)) {
+        
+            dest = a2;
+        
+        // Else, go for the opponent's territories (that they're not in)
+        } else if (t1.owner != robot_id && t1.owner != 0) {
+            
+            dest = a1;
+        
+        } else if (t2.owner != robot_id && t2.owner != 0) {
+            
+            dest = a2;
+        }
+        
+        if (game.territories[dest].owner != robot_id) {
+        
+            capture_territory(dest);
+            
+        }
+        
+        if (game.territories[dest].owner == robot_id && 
+            (game.territories[dest].remaining || game.territories[dest].rate_limit < 2)) {
+            
+            mine_territory(dest);
+        
+        }   // If we didn't capture successfully, just go on
+        
+        current_territory = dest;
+        
+    }
+    
+    return 0;
+}
+
+int uend(void) {
+    turnToHeading(0);
+    waitForMovement();
     
     return 0;
 }

@@ -5,7 +5,7 @@
 #include <lib/motor_group.h>
 
 #define SETPOINT_MAX_DERIV  28
-#define SETPOINT_MIN_VEL    28
+#define SETPOINT_MIN_VEL    38
 
 // Motor config
 #define L_MOTOR_PORT 1

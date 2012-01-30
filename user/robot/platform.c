@@ -25,6 +25,8 @@ void platform_init(void) {
 
 void pauseMovement() {
     platform_pause = 1;
+    motor_set_vel(L_MOTOR_PORT, 0);
+    motor_set_vel(R_MOTOR_PORT, 0);
     motor_brake(L_MOTOR_PORT);
     motor_brake(R_MOTOR_PORT);
 }

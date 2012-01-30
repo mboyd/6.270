@@ -46,12 +46,14 @@ static territory_t territories[6] = { { {1791, 443},   {1791, -443}  }, \
 
 float distanceTo(point_t p);
 
+uint8_t opponentPosition(void);
+
 point_t closestGearbox(void);
 point_t closestLever(void);
 
 point_t gearboxOffset(float nOffset, float pOffset, uint8_t territory);
-point_t leverOffset(float offset, uint8_t territory);
-point_t leverTargetOffset(float offset, uint8_t territory);
+point_t leverOffset(float nOffset, float pOffset, uint8_t territory);
+point_t leverTargetOffset(float nOffset, float pOffset, uint8_t territory);
 
 
 #endif

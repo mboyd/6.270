@@ -48,6 +48,7 @@
 // defined by user
 extern int umain (void);
 extern int usetup (void);
+extern int uend (void);
 
 volatile uint8_t rf_start = 0;
 
@@ -56,6 +57,7 @@ void round_start() {
 }
 
 void round_end() {
+    //uend();
     printf("\nRound end");
     halt();
 }

@@ -15,6 +15,8 @@ void cannon_set_distance(float distance);
 void cannon_set_rpm(float rpm);
 float cannon_get_rpm(void);
 
+void setTargetReady(int targetReady);
+
 int cannon_ready(void);
 void cannon_wait(void);
 
