@@ -23,7 +23,7 @@ struct lock cannon_data_lock;
 void cannon_set_distance(float dist) {
     // Linear fit to calibration curve; see spreadsheet
     //float rpm = 792.515 + 6.88129 * (dist * 0.06874154263);
-    float rpm = 792.515 + 4.75 * (dist * 0.06874154263);
+    float rpm = 792.515 + 4.55 * (dist * 0.06874154263);
     cannon_set_rpm(rpm);
 }
 
@@ -168,6 +168,8 @@ int cannon_trigger_loop(void) {
             int old_reverse = 0;
             
             if (!target_ready) {
+                
+                continue;
                 
                 if (platform_pause) {   // Platform is paused for some reason
                     continue;           // Don't fire yet, we're probably syncing the gyro

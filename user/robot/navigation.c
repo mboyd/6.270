@@ -3,6 +3,7 @@
  */
 #include "navigation.h"
 #include "platform.h"
+#include "gameboard.h"
 
 #include <joyos.h>
 #include <lib/motion.h>
@@ -278,11 +279,8 @@ void vps_update(void) {
     
     // VPS angular correction
     // 443.4units/ft 129in alt
-    float vps_r = sqrt(x*x + y*y);
-    float vps_corr = 1 -(443.4 / (4766.55 * 35 / 38));
-    
-    float vps_t = atan2(y, x);
-    
+    float vps_corr = 1 - ((443.4 * 35 / 38) / (4766.55));
+        
     x *= vps_corr;
     y *= vps_corr;
         
@@ -293,6 +291,8 @@ void vps_update(void) {
     current_x = x;
     current_y = y;
     current_t = t;
+    
+    //decomposeLeverTarget(x, y);
     
     vps_last_update = position_microtime;
 }
@@ -460,13 +460,13 @@ int recovery_loop(void) {
         acquire(nav_data_lock);
         float dist = sqrt(square(current_x - last_x) + square(current_y - last_y));
         
-        if (recovery_enabled && dist < NAV_POS_EPS && (current_t - last_t) < NAV_ANG_EPS*3 && nav_state != DONE) {
+        if (recovery_enabled && dist < NAV_POS_EPS && (current_t - last_t) < NAV_ANG_EPS*7 && nav_state != DONE) {
             // Stuck, hit a wall, etc
             pauseMovement();    // Stop what we're doing
 
-            int vel = -240;
+            int vel = -200;
             if (platform_reverse) {
-                vel = 240;
+                vel = 200;
             }
             motor_set_vel(L_MOTOR_PORT, vel);
             motor_set_vel(R_MOTOR_PORT, vel);

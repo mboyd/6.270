@@ -2,14 +2,14 @@
 #define __NAVIGATION_H
 
 // Tunable parameters
-#define NAV_ROT_KP              -4
+#define NAV_ROT_KP              -3.8
 #define NAV_ROT_KI              0
 #define NAV_ROT_KD              0.00
 
 #define NAV_FWD_GAIN            0.30
 
 // Fastest / slowest allowed rotation (left/right setpoint delta)
-#define NAV_MAX_ROT             150
+#define NAV_MAX_ROT             140
 #define NAV_MIN_ROT             50
 // Same thing, but in reverse mode
 #define NAV_MAX_RVS_ROT         105

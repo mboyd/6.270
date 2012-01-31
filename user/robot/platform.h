@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <lib/motor_group.h>
 
-#define SETPOINT_MAX_DERIV  28
+#define SETPOINT_MAX_DERIV  100
 #define SETPOINT_MIN_VEL    38
 
 // Motor config
@@ -23,9 +23,9 @@
 // Servo config
 #define TRIGGER_SERVO_PORT  2
 // Forward
-#define TRIGGER_LOWER_LIMIT 203
+#define TRIGGER_LOWER_LIMIT 227
 // Back
-#define TRIGGER_UPPER_LIMIT 337
+#define TRIGGER_UPPER_LIMIT 368
 
 #define LEVER_SERVO_PORT    0
 // Up
