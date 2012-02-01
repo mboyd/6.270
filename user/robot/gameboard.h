@@ -34,16 +34,16 @@ static point_t targets[2] = { {-128, 221.5}, \
                               
 static point_t blue_lever_offsets[6] = { {256, 5}, \
                                          {242, -22}, \
-                                         {247, 35}, \
-                                         {248, 28}, \
+                                         {240, 35}, \
+                                         {250, 28}, \
                                          {256, 30}, \
                                          {260, 0} };
                                          
- static point_t red_lever_offsets[6] = { {256, 5}, \
-                                         {242, -22}, \
-                                         {247, 0}, \
-                                         {248, 44}, \
-                                         {256, 30}, \
+ static point_t red_lever_offsets[6] = { {260, -10}, \
+                                         {242, -30}, \
+                                         {235, 15}, \
+                                         {240, 44}, \
+                                         {256, 10}, \
                                          {250, 0} };
 
 typedef struct territory {

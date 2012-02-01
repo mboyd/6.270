@@ -23,7 +23,7 @@ struct lock cannon_data_lock;
 void cannon_set_distance(float dist) {
     // Linear fit to calibration curve; see spreadsheet
     //float rpm = 792.515 + 6.88129 * (dist * 0.06874154263);
-    float rpm = 792.515 + 4.55 * (dist * 0.06874154263);
+    float rpm = 792.515 + 4.50 * (dist * 0.06874154263);
     cannon_set_rpm(rpm);
 }
 
@@ -154,7 +154,7 @@ int cannon_trigger_loop(void) {
     while (1) {
         cannon_set_distance(distanceTo(targets[0]));    // Update cannon setpoint
         
-        if (analog_read(CANNON_BREAKBEAM_PORT) < 200) { // No ball
+        if (analog_read(CANNON_BREAKBEAM_PORT) < 250) { // No ball
             if (is_held(&cannon_empty) && (++empty_count) == 4) {
                 release(&cannon_empty);
             }

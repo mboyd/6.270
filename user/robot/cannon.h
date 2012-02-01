@@ -5,7 +5,7 @@
 #define CANNON_RPM_KD   0
 #define CANNON_RPM_KI   -0.15
 
-#define CANNON_RPM_EPS  30
+#define CANNON_RPM_EPS  50
 
 #define CANNON_THREAD_PRIORITY      20
 

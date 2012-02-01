@@ -6,6 +6,8 @@
 int16_t pastL_vel;
 int16_t pastR_vel;
 
+struct lock pause_lock;
+
 void platform_init(void) {
     platform_reverse = 0;
     platform_pause = 0;
@@ -18,21 +20,27 @@ void platform_init(void) {
     gyro_init(GYRO_PORT, LSB_US_PER_DEG, 1000L);
     printf("done.\n");
     
+    init_lock(&pause_lock, "pause_lock");
+    
     // Set initial servo positions
     triggerBack();
     leverUp();
 }
 
 void pauseMovement() {
+    acquire(&pause_lock);
     platform_pause = 1;
     motor_set_vel(L_MOTOR_PORT, 0);
     motor_set_vel(R_MOTOR_PORT, 0);
     motor_brake(L_MOTOR_PORT);
     motor_brake(R_MOTOR_PORT);
+    release(&pause_lock);
 }
 
 void unpauseMovement() {
+    acquire(&pause_lock);
     platform_pause = 0;
+    release(&pause_lock);
 }
 
 void setReversed(int reversed) {
@@ -48,7 +56,11 @@ float getHeading(void) {
 }
 
 void setLRMotors(int16_t l_vel, int16_t r_vel) {
-    if (platform_pause) {
+    int paused;
+    acquire(&pause_lock);
+    paused = platform_pause;
+    release(&pause_lock);
+    if (paused) {
         return;
     }
     

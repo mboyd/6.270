@@ -9,6 +9,8 @@ extern volatile uint8_t robot_id;
 enum team_t {RED, BLUE} team_t;
 enum team_t team;
 
+int lever_blacklist[6] = {0, 0, 0, 0, 0, 0};
+
 int usetup(void) {
     robot_id = 7;
             
@@ -102,7 +104,7 @@ void mine_territory_fallback(uint8_t territory) {
     uint8_t failure_count = 0;
     
     point_t p1 = leverOffset(550, 0, territory);
-    point_t p2 = leverOffset(247, 0, territory);
+    point_t p2 = leverOffset(240, 0, territory);
     
     moveToPoint(p1.x, p1.y, 150);                   // Move to staging point
     waitForMovement();
@@ -148,6 +150,7 @@ void mine_territory_fallback(uint8_t territory) {
             
             if (failure_count == 2) {
                 // We've already failed once, bail
+                lever_blacklist[territory]++;
                 goto cleanup_fallback;
             }
             
@@ -232,9 +235,7 @@ void mine_territory(uint8_t territory) {
     
     moveToPoint(p1.x, p1.y, 150);                   // Move to staging point
     waitForMovement();
-    
-    engageLever:
-    
+        
     setReversed(1);                                 // Turn to the lever
     turnToPoint(p2.x, p2.y);
     waitForMovement();
@@ -343,6 +344,8 @@ int umain(void) {
     }
     */
     
+    cannon_start();
+    
     nav_start();
             
     cannon_start();
@@ -358,7 +361,7 @@ int umain(void) {
     uint32_t start_time = get_time_us();
     int dir = 1;
     
-    while ((get_time_us() - start_time) < 8000000) {
+    while ((get_time_us() - start_time) < 7000000) {
         uint8_t op = opponentPosition();
         
         if (op == current_territory + dir) {
@@ -422,9 +425,14 @@ int umain(void) {
             dest = a2;
         }
         
+        
+        /********************************/
+        int moved = 0;
+        
         if (game.territories[dest].owner != robot_id) {
             
             capture_territory(dest);
+            moved = 1;
         }
         
         uint8_t pos = closestTerritory();
@@ -437,16 +445,18 @@ int umain(void) {
             waitForMovement();
         }
         
+        op = opponentPosition();    // Update opponent position
+        
         if (game.territories[dest].owner == robot_id && 
-            (game.territories[dest].remaining)) {
+            (game.territories[dest].remaining) && !lever_blacklist[dest] && op != dest) {
             
+            moved = 1;
             mine_territory(dest);
         
         }   // If we didn't capture successfully, just go on
         
         // If we couldn't do anything (forced by opponent), be sure and move
-        if (game.territories[dest].owner == robot_id && 
-            (!game.territories[dest].remaining)) {
+        if (!moved) {
             
             moveToPointDirected(centers[dest].x, centers[dest].y, 180, 0);
             waitForMovement();
